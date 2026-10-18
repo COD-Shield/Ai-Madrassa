@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+import streamlit.components.v1 as components
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -7,94 +8,6 @@ st.set_page_config(
     page_icon="📖",
     layout="wide"
 )
-
-# --- CUSTOM CSS FOR HTML TABLE QAIDA PAGE ---
-st.markdown("""
-    <style>
-    .main {
-        background-color: #f4f6f0;
-    }
-    .qaida-book-container {
-        border: 6px double #1b5e20;
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        max-width: 950px;
-        margin: 0 auto;
-        direction: rtl;
-    }
-    .qaida-header-banner {
-        background: linear-gradient(135deg, #d32f2f, #b71c1c);
-        color: white;
-        padding: 12px;
-        border-radius: 10px;
-        text-align: center;
-        font-size: 26px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-    .bismillah-banner {
-        font-size: 30px;
-        text-align: center;
-        color: #1b5e20;
-        font-family: 'Amiri', 'Traditional Arabic', serif;
-        font-weight: bold;
-        padding: 8px;
-        border-bottom: 2px solid #c8e6c9;
-        border-top: 2px solid #c8e6c9;
-        margin-bottom: 20px;
-    }
-    .hidayat-box {
-        background-color: #fffde7;
-        border: 2px solid #fbc02d;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 15px;
-        color: #333;
-        margin-bottom: 25px;
-        text-align: right;
-    }
-    .hidayat-title {
-        color: #e65100;
-        font-weight: bold;
-        font-size: 17px;
-    }
-    /* HTML Table styling for Book Page Grid */
-    .qaida-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 12px;
-        direction: rtl;
-        margin-bottom: 20px;
-    }
-    .qaida-td {
-        background-color: #ffffff;
-        border: 2px solid #2e7d32;
-        border-radius: 12px;
-        text-align: center;
-        width: 20%;
-        padding: 12px 5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        vertical-align: middle;
-    }
-    .qaida-td:hover {
-        background-color: #f1f8e9;
-    }
-    .arabic-ltr {
-        font-size: 42px;
-        font-family: 'Amiri', serif;
-        font-weight: bold;
-        line-height: 1.2;
-    }
-    .ltr-name {
-        font-size: 13px;
-        color: #555;
-        font-weight: bold;
-        margin-top: 5px;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # --- SIDEBAR SETTINGS ---
 st.sidebar.header("⚙️ Settings / ترتیبات")
@@ -137,30 +50,115 @@ takhti_1_letters = [
     {"ar": "ي", "name": "Ya", "color": "#000000"}
 ]
 
-# --- MAIN PAGE CONTAINER ---
-st.markdown('<div class="qaida-book-container">', unsafe_allow_html=True)
+# --- BUILD HTML & CSS FOR THE QAIDA BOOK PAGE ---
+html_code = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap');
+body {
+    background-color: #f4f6f0;
+    margin: 0;
+    padding: 10px;
+}
+.qaida-book-container {
+    border: 6px double #1b5e20;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 950px;
+    margin: 0 auto;
+    direction: rtl;
+}
+.qaida-header-banner {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-family: sans-serif;
+}
+.bismillah-banner {
+    font-size: 32px;
+    text-align: center;
+    color: #1b5e20;
+    font-family: 'Amiri', serif;
+    font-weight: bold;
+    padding: 8px;
+    border-bottom: 2px solid #c8e6c9;
+    border-top: 2px solid #c8e6c9;
+    margin-bottom: 20px;
+}
+.hidayat-box {
+    background-color: #fffde7;
+    border: 2px solid #fbc02d;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: right;
+    font-family: sans-serif;
+    line-height: 1.6;
+}
+.hidayat-title {
+    color: #e65100;
+    font-weight: bold;
+    font-size: 17px;
+}
+.qaida-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 12px;
+    direction: rtl;
+    margin-bottom: 10px;
+}
+.qaida-td {
+    background-color: #ffffff;
+    border: 2px solid #2e7d32;
+    border-radius: 12px;
+    text-align: center;
+    width: 20%;
+    padding: 12px 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    vertical-align: middle;
+}
+.qaida-td:hover {
+    background-color: #f1f8e9;
+}
+.arabic-ltr {
+    font-size: 42px;
+    font-family: 'Amiri', serif;
+    font-weight: bold;
+    line-height: 1.2;
+}
+.ltr-name {
+    font-size: 13px;
+    color: #555;
+    font-weight: bold;
+    margin-top: 5px;
+    font-family: sans-serif;
+}
+</style>
 
-# 1. Header Banner
-st.markdown('<div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>', unsafe_allow_html=True)
-
-# 2. Bismillah
-st.markdown('<div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>', unsafe_allow_html=True)
-
-# 3. Hidayat Box
-st.markdown('''
+<div class="qaida-book-container">
+    <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
+    <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
     <div class="hidayat-box">
         <span class="hidayat-title">ہدایات:</span> یہ حروفِ مفردات بنیاد ہیں۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ یادکروائیں سطر کے آخر سے دائیں اور اوپر سے نیچے اور نیچے سے اوپر کی طرف پڑھوائیں۔ اگر اس تختی میں کمی رہی تو یاد رکھیے اس کا اثر بہت آگے تک جائے گا اور کمزور بنیاد پر اچھی عمارت ممکن نہیں۔
     </div>
-''', unsafe_allow_html=True)
+    <table class="qaida-table">
+"""
 
-# 4. HTML TABLE GENERATION (With unsafe_allow_html=True)
-table_html = '<table class="qaida-table">'
+# Append rows
 cols_per_row = 5
 total_items = len(takhti_1_letters)
 
 for i in range(0, total_items, cols_per_row):
     row_items = takhti_1_letters[i:i + cols_per_row]
-    table_html += '<tr>'
+    html_code += '<tr>'
     
     if len(row_items) < cols_per_row:
         empty_slots = cols_per_row - len(row_items)
@@ -168,31 +166,31 @@ for i in range(0, total_items, cols_per_row):
         right_pad = empty_slots - left_pad
         
         for _ in range(left_pad):
-            table_html += '<td style="border: none;"></td>'
+            html_code += '<td style="border: none;"></td>'
             
         for item in row_items:
-            table_html += f'''
+            html_code += f'''
                 <td class="qaida-td">
                     <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
                     <div class="ltr-name">{item['name']}</div>
                 </td>
             '''
         for _ in range(right_pad):
-            table_html += '<td style="border: none;"></td>'
+            html_code += '<td style="border: none;"></td>'
     else:
         for item in row_items:
-            table_html += f'''
+            html_code += f'''
                 <td class="qaida-td">
                     <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
                     <div class="ltr-name">{item['name']}</div>
                 </td>
             '''
-    table_html += '</tr>'
+    html_code += '</tr>'
 
-table_html += '</table>'
-st.markdown(table_html, unsafe_allow_html=True) # <-- Crucial fix here
+html_code += '</table></div>'
 
-st.markdown('</div>', unsafe_allow_html=True) # End of container
+# Render component safely
+components.html(html_code, height=780, scrolling=True)
 
 st.divider()
 
