@@ -13,6 +13,7 @@ st.markdown("""
     <style>
     .main {
         background-color: #f4f5f7;
+        direction: rtl;
     }
     [data-testid="stSidebar"] {
         background-color: #6d1b7b !important;
@@ -30,6 +31,7 @@ st.markdown("""
         align-items: center;
         justify-content: space-between;
         margin-bottom: 25px;
+        direction: rtl;
     }
     .workflow-card {
         background-color: #ffffff;
@@ -184,7 +186,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (Using Streamlit Columns)
+# 2. QAIDA BOOK VIEWER (Right-to-Left Arabic Grid)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -234,21 +236,24 @@ elif st.session_state.active_view == "QaidaViewer":
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ سطر کے آخر سے دائیں اور اوپر سے نیچے کی طرف مشق کریں۔
+                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں۔ سطر کے آخر سے دائیں طرف سے پڑھنا شروع کریں۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
-    st.write("") # spacing
+    st.write("")
 
-    # Render Letters in Grid using Streamlit Columns (5 per row)
+    # Render Letters in Grid using Streamlit Columns (Reversed for RTL so Alif starts from Right)
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
+        
+        # Reverse the row items so the rightmost column gets the first item (Alif)
         cols = st.columns(cols_per_row)
+        reversed_cols = list(reversed(cols))
         
         for idx, item in enumerate(row_items):
-            with cols[idx]:
+            with reversed_cols[idx]:
                 st.markdown(f"""
                     <div class="qaida-box">
                         <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
