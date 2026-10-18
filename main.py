@@ -14,7 +14,6 @@ st.markdown("""
     .main {
         background-color: #f4f6f0;
     }
-    /* Outer Book Page Container with RTL direction */
     .qaida-book-container {
         border: 6px double #1b5e20;
         background-color: #ffffff;
@@ -25,7 +24,6 @@ st.markdown("""
         margin: 0 auto;
         direction: rtl;
     }
-    /* Top Header Banner */
     .qaida-header-banner {
         background: linear-gradient(135deg, #d32f2f, #b71c1c);
         color: white;
@@ -36,7 +34,6 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 15px;
     }
-    /* Bismillah Banner */
     .bismillah-banner {
         font-size: 30px;
         text-align: center;
@@ -48,7 +45,6 @@ st.markdown("""
         border-top: 2px solid #c8e6c9;
         margin-bottom: 20px;
     }
-    /* Hidayat Box */
     .hidayat-box {
         background-color: #fffde7;
         border: 2px solid #fbc02d;
@@ -75,7 +71,7 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Right to Left Order) ---
+# --- QAIDA DATA (Complete Takhti 1 - All Arabic Alphabets from Alif to Ya) ---
 takhti_1_letters = [
     {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
@@ -87,7 +83,7 @@ takhti_1_letters = [
     {"ar": "د", "name": "Dal", "color": "#e91e63"},
     {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
     {"ar": "ر", "name": "Ra", "color": "#43a047"},
-    {"ar": "ز", "name": "Zal / Z", "color": "#1e88e5"},
+    {"ar": "ز", "name": "Za", "color": "#1e88e5"},
     {"ar": "س", "name": "Seen", "color": "#d81b60"},
     {"ar": "ش", "name": "Sheen", "color": "#000000"},
     {"ar": "ص", "name": "Sad", "color": "#00897b"},
@@ -96,7 +92,16 @@ takhti_1_letters = [
     {"ar": "ظ", "name": "Za", "color": "#00897b"},
     {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
     {"ar": "غ", "name": "Ghain", "color": "#e53935"},
-    {"ar": "ف", "name": "Fa", "color": "#d81b60"}
+    {"ar": "ف", "name": "Fa", "color": "#d81b60"},
+    {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
+    {"ar": "ك", "name": "Kaf", "color": "#43a047"},
+    {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
+    {"ar": "م", "name": "Meem", "color": "#8e24aa"},
+    {"ar": "ن", "name": "Noon", "color": "#00897b"},
+    {"ar": "و", "name": "Waw", "color": "#e53935"},
+    {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
+    {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
+    {"ar": "ي", "name": "Ya", "color": "#000000"}
 ]
 
 # --- MAIN PAGE CONTAINER ---
@@ -115,11 +120,10 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. RTL GRID COLUMNS (Reversing column loop so it starts from Right side)
+# 4. RTL GRID COLUMNS (Complete Alphabets Grid - Right to Left)
 cols_per_row = 5
 for i in range(0, len(takhti_1_letters), cols_per_row):
     cols = st.columns(cols_per_row)
-    # Reversing columns order for RTL layout (Right to Left filling)
     for j in range(cols_per_row - 1, -1, -1):
         idx = i + (cols_per_row - 1 - j)
         if idx < len(takhti_1_letters):
