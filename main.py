@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR EXACT QAIDA BOOK LAYOUT (RTL & CENTERED LAST ROW) ---
+# --- CUSTOM CSS FOR EXACT BOOK-STYLE QAIDA GRID ---
 st.markdown("""
     <style>
     .main {
@@ -60,24 +60,26 @@ st.markdown("""
         font-weight: bold;
         font-size: 17px;
     }
-    /* Proper RTL CSS Grid for Book Page */
-    .qaida-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
+    /* PERFECT BOOK GRID USING CSS FLEXBOX & WRAP */
+    .qaida-grid-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 12px;
         direction: rtl;
         margin-bottom: 20px;
     }
-    .qaida-card {
+    .qaida-cell {
         background-color: #ffffff;
         border: 2px solid #2e7d32;
         border-radius: 12px;
         text-align: center;
-        padding: 12px 5px;
+        width: 18%; /* Exactly 5 items per row with gaps */
+        padding: 12px 0;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         transition: 0.2s;
     }
-    .qaida-card:hover {
+    .qaida-cell:hover {
         background-color: #f1f8e9;
         transform: scale(1.03);
     }
@@ -93,8 +95,6 @@ st.markdown("""
         font-weight: bold;
         margin-top: 5px;
     }
-    /* Centering the last row items */
-    .qaida-grid .qaida-card:nth-last-child(4) { grid-column-start: 2; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -106,37 +106,37 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Correctly ordered from Alif to Ya for RTL Grid) ---
+# --- QAIDA DATA (Direct Alif to Ya Order) ---
 takhti_1_letters = [
-    {"ar": "ي", "name": "Ya", "color": "#000000"},
-    {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
-    {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
-    {"ar": "و", "name": "Waw", "color": "#e53935"},
-    {"ar": "ن", "name": "Noon", "color": "#00897b"},
-    {"ar": "م", "name": "Meem", "color": "#8e24aa"},
-    {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
-    {"ar": "ك", "name": "Kaf", "color": "#43a047"},
-    {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
-    {"ar": "ف", "name": "Fa", "color": "#d81b60"},
-    {"ar": "غ", "name": "Ghain", "color": "#e53935"},
-    {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
-    {"ar": "ظ", "name": "Za", "color": "#00897b"},
-    {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
-    {"ar": "ض", "name": "Dad", "color": "#43a047"},
-    {"ar": "ص", "name": "Sad", "color": "#00897b"},
-    {"ar": "ش", "name": "Sheen", "color": "#000000"},
-    {"ar": "س", "name": "Seen", "color": "#d81b60"},
-    {"ar": "ز", "name": "Za", "color": "#1e88e5"},
-    {"ar": "ر", "name": "Ra", "color": "#43a047"},
-    {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
-    {"ar": "د", "name": "Dal", "color": "#e91e63"},
-    {"ar": "خ", "name": "Kha", "color": "#43a047"},
-    {"ar": "ح", "name": "Ha", "color": "#d81b60"},
-    {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
-    {"ar": "ث", "name": "Tha", "color": "#00897b"},
-    {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
+    {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
-    {"ar": "ا", "name": "Alif", "color": "#e53935"}
+    {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
+    {"ar": "ث", "name": "Tha", "color": "#00897b"},
+    {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
+    {"ar": "ح", "name": "Ha", "color": "#d81b60"},
+    {"ar": "خ", "name": "Kha", "color": "#43a047"},
+    {"ar": "د", "name": "Dal", "color": "#e91e63"},
+    {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
+    {"ar": "ر", "name": "Ra", "color": "#43a047"},
+    {"ar": "ز", "name": "Za", "color": "#1e88e5"},
+    {"ar": "س", "name": "Seen", "color": "#d81b60"},
+    {"ar": "ش", "name": "Sheen", "color": "#000000"},
+    {"ar": "ص", "name": "Sad", "color": "#00897b"},
+    {"ar": "ض", "name": "Dad", "color": "#43a047"},
+    {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
+    {"ar": "ظ", "name": "Za", "color": "#00897b"},
+    {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
+    {"ar": "غ", "name": "Ghain", "color": "#e53935"},
+    {"ar": "ف", "name": "Fa", "color": "#d81b60"},
+    {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
+    {"ar": "ك", "name": "Kaf", "color": "#43a047"},
+    {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
+    {"ar": "م", "name": "Meem", "color": "#8e24aa"},
+    {"ar": "ن", "name": "Noon", "color": "#00897b"},
+    {"ar": "و", "name": "Waw", "color": "#e53935"},
+    {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
+    {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
+    {"ar": "ي", "name": "Ya", "color": "#000000"}
 ]
 
 # --- MAIN PAGE CONTAINER ---
@@ -155,11 +155,11 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. CSS GRID RENDER
-st.markdown('<div class="qaida-grid">', unsafe_allow_html=True)
+# 4. FLEXBOX BOOK GRID RENDERING
+st.markdown('<div class="qaida-grid-wrapper">', unsafe_allow_html=True)
 for item in takhti_1_letters:
     st.markdown(f'''
-        <div class="qaida-card">
+        <div class="qaida-cell">
             <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
             <div class="ltr-name">{item['name']}</div>
         </div>
