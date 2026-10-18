@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR BOOK PAGE FRAME ---
+# --- CUSTOM CSS FOR EXACT QAIDA BOOK LAYOUT (RTL & CENTERED LAST ROW) ---
 st.markdown("""
     <style>
     .main {
@@ -60,6 +60,41 @@ st.markdown("""
         font-weight: bold;
         font-size: 17px;
     }
+    /* Proper RTL CSS Grid for Book Page */
+    .qaida-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        direction: rtl;
+        margin-bottom: 20px;
+    }
+    .qaida-card {
+        background-color: #ffffff;
+        border: 2px solid #2e7d32;
+        border-radius: 12px;
+        text-align: center;
+        padding: 12px 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: 0.2s;
+    }
+    .qaida-card:hover {
+        background-color: #f1f8e9;
+        transform: scale(1.03);
+    }
+    .arabic-ltr {
+        font-size: 42px;
+        font-family: 'Amiri', serif;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+    .ltr-name {
+        font-size: 13px;
+        color: #555;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    /* Centering the last row items */
+    .qaida-grid .qaida-card:nth-last-child(4) { grid-column-start: 2; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -71,37 +106,37 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Complete Takhti 1 - Right to Left Order) ---
+# --- QAIDA DATA (Correctly ordered from Alif to Ya for RTL Grid) ---
 takhti_1_letters = [
-    {"ar": "ا", "name": "Alif", "color": "#e53935"},
-    {"ar": "ب", "name": "Ba", "color": "#000000"},
-    {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
-    {"ar": "ث", "name": "Tha", "color": "#00897b"},
-    {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
-    {"ar": "ح", "name": "Ha", "color": "#d81b60"},
-    {"ar": "خ", "name": "Kha", "color": "#43a047"},
-    {"ar": "د", "name": "Dal", "color": "#e91e63"},
-    {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
-    {"ar": "ر", "name": "Ra", "color": "#43a047"},
-    {"ar": "ز", "name": "Za", "color": "#1e88e5"},
-    {"ar": "س", "name": "Seen", "color": "#d81b60"},
-    {"ar": "ش", "name": "Sheen", "color": "#000000"},
-    {"ar": "ص", "name": "Sad", "color": "#00897b"},
-    {"ar": "ض", "name": "Dad", "color": "#43a047"},
-    {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
-    {"ar": "ظ", "name": "Za", "color": "#00897b"},
-    {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
-    {"ar": "غ", "name": "Ghain", "color": "#e53935"},
-    {"ar": "ف", "name": "Fa", "color": "#d81b60"},
-    {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
-    {"ar": "ك", "name": "Kaf", "color": "#43a047"},
-    {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
-    {"ar": "م", "name": "Meem", "color": "#8e24aa"},
-    {"ar": "ن", "name": "Noon", "color": "#00897b"},
-    {"ar": "و", "name": "Waw", "color": "#e53935"},
-    {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
+    {"ar": "ي", "name": "Ya", "color": "#000000"},
     {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
-    {"ar": "ي", "name": "Ya", "color": "#000000"}
+    {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
+    {"ar": "و", "name": "Waw", "color": "#e53935"},
+    {"ar": "ن", "name": "Noon", "color": "#00897b"},
+    {"ar": "م", "name": "Meem", "color": "#8e24aa"},
+    {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
+    {"ar": "ك", "name": "Kaf", "color": "#43a047"},
+    {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
+    {"ar": "ف", "name": "Fa", "color": "#d81b60"},
+    {"ar": "غ", "name": "Ghain", "color": "#e53935"},
+    {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
+    {"ar": "ظ", "name": "Za", "color": "#00897b"},
+    {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
+    {"ar": "ض", "name": "Dad", "color": "#43a047"},
+    {"ar": "ص", "name": "Sad", "color": "#00897b"},
+    {"ar": "ش", "name": "Sheen", "color": "#000000"},
+    {"ar": "س", "name": "Seen", "color": "#d81b60"},
+    {"ar": "ز", "name": "Za", "color": "#1e88e5"},
+    {"ar": "ر", "name": "Ra", "color": "#43a047"},
+    {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
+    {"ar": "د", "name": "Dal", "color": "#e91e63"},
+    {"ar": "خ", "name": "Kha", "color": "#43a047"},
+    {"ar": "ح", "name": "Ha", "color": "#d81b60"},
+    {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
+    {"ar": "ث", "name": "Tha", "color": "#00897b"},
+    {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
+    {"ar": "ب", "name": "Ba", "color": "#000000"},
+    {"ar": "ا", "name": "Alif", "color": "#e53935"}
 ]
 
 # --- MAIN PAGE CONTAINER ---
@@ -120,38 +155,16 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. STREAMLIT NATIVE COLUMNS GRID (Guaranteed 5 items per row, RTL order, centered last row)
-cols_per_row = 5
-total_items = len(takhti_1_letters)
-
-for i in range(0, total_items, cols_per_row):
-    row_items = takhti_1_letters[i:i + cols_per_row]
-    cols = st.columns(cols_per_row)
-    
-    # If it's the last row with fewer items, pad with empty slots to center them
-    if len(row_items) < cols_per_row:
-        offset = (cols_per_row - len(row_items)) // 2
-        for idx, item in enumerate(row_items):
-            # RTL placement for last row
-            col_idx = cols_per_row - 1 - (offset + idx)
-            with cols[col_idx]:
-                st.markdown(f"""
-                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
-                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
-                    </div>
-                """, unsafe_allow_html=True)
-    else:
-        # Full rows (5 items) in Right-to-Left order
-        for j in range(cols_per_row):
-            item = row_items[cols_per_row - 1 - j]
-            with cols[j]:
-                st.markdown(f"""
-                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
-                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
-                    </div>
-                """, unsafe_allow_html=True)
+# 4. CSS GRID RENDER
+st.markdown('<div class="qaida-grid">', unsafe_allow_html=True)
+for item in takhti_1_letters:
+    st.markdown(f'''
+        <div class="qaida-card">
+            <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
+            <div class="ltr-name">{item['name']}</div>
+        </div>
+    ''', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
