@@ -7,13 +7,13 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS for Clean White Background & Professional UI
+# Custom CSS for Clean White Background, RTL Support & Perfect Readability
 st.markdown(
     """
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
 
-        /* Clean White Background for High Readability */
+        /* Clean White Background */
         .stApp {
             background-color: #f8fafc;
             color: #1e293b;
@@ -31,7 +31,7 @@ st.markdown(
             font-size: 1.1rem;
         }
 
-        /* Header Box */
+        /* Header Box with Taawwudh & Bismillah */
         .header-box {
             text-align: center;
             background: #ffffff;
@@ -47,6 +47,12 @@ st.markdown(
             font-size: 2.2rem;
             color: #047857;
             line-height: 1.8;
+        }
+
+        /* RTL Alignment Fix for Dropdowns and Text */
+        .rtl-container {
+            direction: rtl;
+            text-align: right;
         }
 
         /* Admin Dashboard Cards */
@@ -84,7 +90,7 @@ if navigation == "⚙️ ایڈمن پینل (Admin Panel)":
         """
         <div class="header-box">
             <h1 style="color: #0f172a; font-family: Amiri;">مرحباً - ایڈمنسٹریشن ڈیش بورڈ</h1>
-            <p style="color: #64748b;">یہاں سے آپ سسٹمز، کورس اسکرپٹس اور اے آئی ایجنٹس کو کنٹرول کر سکتے ہیں۔</p>
+            <p style="color: #64748b;">یہاں سے آپ سسٹمز، کورس اسکرپٹس اور اے آئی ایجنٹس کو کنٹرول कर سکتے ہیں۔</p>
         </div>
     """,
         unsafe_allow_html=True,
@@ -145,7 +151,7 @@ if navigation == "⚙️ ایڈمن پینل (Admin Panel)":
             st.success("Webhooks پینل اوپن ہو گیا ہے۔")
 
 elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
-    # Header Section with Complete Taawwudh and Bismillah
+    # Header Section with Complete Taawwudh and Bismillah (Restored)
     st.markdown(
         """
         <div class="header-box">
@@ -160,14 +166,15 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
 
     st.markdown(
         """
-        <div style="background: #ffffff; border-right: 6px solid #047857; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); direction: rtl;">
+        <div style="background: #ffffff; border-right: 6px solid #047857; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); direction: rtl; text-align: right;">
             <strong>ہدایات:</strong> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے تلفظ بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔
         </div>
     """,
         unsafe_allow_html=True,
     )
 
-    # Complete Takhtiyan List based on Noorani Qaida PDF
+    # RTL Wrapper for Selectbox
+    st.markdown('<div class="rtl-container">', unsafe_allow_html=True)
     selected_takhti = st.selectbox(
         "نورانی قاعدہ کی تختی منتخب کریں:",
         [
@@ -189,10 +196,11 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
             "تختی نمبر 16: تشدید بعد حروف مدّہ",
         ],
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if selected_takhti == "تختی نمبر 1: حروف مفردات (ا، ب، ت...)":
         st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl;'>حروف مفردات کی مشق</h3>",
+            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>حروف مفردات کی مشق</h3>",
             unsafe_allow_html=True,
         )
 
