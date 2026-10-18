@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- MAKE.COM STYLE CUSTOM CSS ---
+# --- MAKE.COM STYLE CUSTOM CSS WITH HOVER EFFECT ---
 st.markdown("""
     <style>
     .main {
@@ -88,6 +88,7 @@ st.markdown("""
         text-align: right;
         line-height: 1.6;
     }
+    /* QAIDA BOX WITH HOVER EFFECT */
     .qaida-box {
         background-color: #ffffff;
         border: 2px solid #6d1b7b;
@@ -96,6 +97,14 @@ st.markdown("""
         padding: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         margin-bottom: 10px;
+        transition: all 0.3s ease-in-out;
+    }
+    .qaida-box:hover {
+        background-color: #f3e5f5;
+        border-color: #4a1254;
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 8px 20px rgba(109,27,123,0.25);
+        cursor: pointer;
     }
     .arabic-letter {
         font-size: 42px;
@@ -186,7 +195,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (Right-to-Left Arabic Grid)
+# 2. QAIDA BOOK VIEWER (RTL with Letter Hover Effect)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -236,19 +245,17 @@ elif st.session_state.active_view == "QaidaViewer":
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں۔ سطر کے آخر سے دائیں طرف سے پڑھنا شروع کریں۔
+                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں۔ کسی بھی حرف پر کرسر لے جانے پر وہ نمایاں (Highlight) ہو جائے گا۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.write("")
 
-    # Render Letters in Grid using Streamlit Columns (Reversed for RTL so Alif starts from Right)
+    # Render Letters in Grid with Hover Effect
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
-        
-        # Reverse the row items so the rightmost column gets the first item (Alif)
         cols = st.columns(cols_per_row)
         reversed_cols = list(reversed(cols))
         
