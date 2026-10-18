@@ -11,12 +11,9 @@ st.set_page_config(
 # --- MAKE.COM STYLE CUSTOM CSS ---
 st.markdown("""
     <style>
-    /* Main Background */
     .main {
         background-color: #f4f5f7;
     }
-    
-    /* Left Sidebar Styling (Make.com Purple Theme) */
     [data-testid="stSidebar"] {
         background-color: #6d1b7b !important;
         color: white !important;
@@ -24,8 +21,6 @@ st.markdown("""
     [data-testid="stSidebar"] * {
         color: white !important;
     }
-    
-    /* Top Header Bar */
     .make-header {
         background-color: #ffffff;
         padding: 15px 25px;
@@ -36,8 +31,6 @@ st.markdown("""
         justify-content: space-between;
         margin-bottom: 25px;
     }
-    
-    /* Workflow Node Cards */
     .workflow-card {
         background-color: #ffffff;
         border: 2px solid #e0e0e0;
@@ -51,8 +44,6 @@ st.markdown("""
         border-color: #6d1b7b;
         box-shadow: 0 6px 20px rgba(109,27,123,0.15);
     }
-    
-    /* Qaida Book Container */
     .qaida-book-container {
         border: 6px double #6d1b7b;
         background-color: #ffffff;
@@ -72,6 +63,7 @@ st.markdown("""
         font-size: 26px;
         font-weight: bold;
         margin-bottom: 15px;
+        font-family: sans-serif;
     }
     .bismillah-banner {
         font-size: 30px;
@@ -108,7 +100,7 @@ st.markdown("""
         border-radius: 12px;
         text-align: center;
         width: 20%;
-        padding: 12px 5px;
+        padding: 15px 5px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         vertical-align: middle;
     }
@@ -152,7 +144,7 @@ if st.sidebar.button("🌐 Webhooks / ایڈمن", use_container_width=True):
     st.session_state.active_view = "Admin"
     st.rerun()
 
-# --- TOP HEADER BAR (Make.com Style) ---
+# --- TOP HEADER BAR ---
 st.markdown("""
     <div class="make-header">
         <div style="font-weight: bold; font-size: 18px; color: #333;">🔗 Integration Module: Noorani Qaida & AI Speech Verification</div>
@@ -201,7 +193,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (Inside Workflow)
+# 2. QAIDA BOOK VIEWER (Fixed HTML Table Rendering)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -245,12 +237,12 @@ elif st.session_state.active_view == "QaidaViewer":
         {"ar": "ي", "name": "Ya", "color": "#000000"}
     ]
 
-    html_code = f"""
+    html_code = """
     <div class="qaida-book-container">
         <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
         <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         <div class="hidayat-box">
-            <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ سطر کے آخر سے دائیں اور اوپر سے نیچے کی طرف مشق کریں۔
+            <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ سطر کے آخر سے دائیں اور اوپر سے نیچے کی طرف مشق کریں۔
         </div>
         <table class="qaida-table">
     """
@@ -260,7 +252,7 @@ elif st.session_state.active_view == "QaidaViewer":
 
     for i in range(0, total_items, cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
-        html_code += '<tr>'
+        html_code += "<tr>"
         
         if len(row_items) < cols_per_row:
             empty_slots = cols_per_row - len(row_items)
@@ -271,25 +263,27 @@ elif st.session_state.active_view == "QaidaViewer":
                 html_code += '<td style="border: none;"></td>'
                 
             for item in row_items:
-                html_code += f'''
+                html_code += f"""
                     <td class="qaida-td">
                         <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
                         <div class="ltr-name">{item['name']}</div>
                     </td>
-                '''
+                """
             for _ in range(right_pad):
                 html_code += '<td style="border: none;"></td>'
         else:
             for item in row_items:
-                html_code += f'''
+                html_code += f"""
                     <td class="qaida-td">
                         <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
                         <div class="ltr-name">{item['name']}</div>
                     </td>
-                '''
-        html_code += '</tr>'
+                """
+        html_code += "</tr>"
 
-    html_code += '</table></div>'
+    html_code += "</table></div>"
+    
+    # Render table properly using st.markdown with unsafe_allow_html=True
     st.markdown(html_code, unsafe_allow_html=True)
     
     st.divider()
@@ -299,7 +293,7 @@ elif st.session_state.active_view == "QaidaViewer":
 
     if audio_val is not None:
         st.audio(audio_val)
-        with st.spinner("🤖 AI استاد آپ کے تلفظ کا جائزہ لے रहा है..."):
+        with st.spinner("🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے..."):
             time.sleep(2)
             
         st.markdown("""
@@ -313,7 +307,7 @@ elif st.session_state.active_view == "QaidaViewer":
 
 
 # ==========================================
-# 3. OTHER VIEWS (Agents, Credentials, Admin)
+# 3. OTHER VIEWS
 # ==========================================
 elif st.session_state.active_view == "Agents":
     st.markdown("### 🤖 AI Pronunciation Agents")
