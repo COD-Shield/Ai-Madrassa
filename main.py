@@ -1,214 +1,172 @@
 import streamlit as st
 import time
-from datetime import datetime
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="AI مکتب و مدرسہ - انٹرایکٹو نورانی قاعدہ",
+    page_title="AI مکتب و مدرسہ - ڈیجیٹل نورانی قاعدہ",
     page_icon="📖",
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR KIDS-FRIENDLY INTERACTIVE UI ---
+# --- CUSTOM CSS FOR TRADITIONAL QAIDA GRID & MULTI-LINGUAL UI ---
 st.markdown("""
     <style>
     .main {
-        background-color: #f4f9f6;
+        background-color: #f9fbf7;
     }
-    .stButton>button {
-        background-color: #2e7d32;
+    .qaida-header {
+        background: linear-gradient(135deg, #2e7d32, #1b5e20);
         color: white;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 12px;
-        padding: 12px 20px;
-        width: 100%;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .stButton>button:hover {
-        background-color: #1b5e20;
-        color: white;
-    }
-    .card-title {
-        font-size: 18px;
-        font-weight: bold;
-        color: #2e7d32;
+        padding: 20px;
+        border-radius: 15px;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    /* Interactive Clickable Letters Styling */
-    .qaida-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+    .instruction-box {
+        background-color: #fffde7;
+        border-left: 6px solid #fbc02d;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 25px;
+        direction: rtl;
+    }
+    /* Grid Box Styling like real Qaida book */
+    .qaida-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
         gap: 15px;
         direction: rtl;
-        padding: 30px;
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-        border: 2px solid #c8e6c9;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
     }
-    .qaida-item {
-        font-size: 45px;
+    .qaida-cell {
+        background-color: #ffffff;
+        border: 3px solid #81c784;
+        border-radius: 15px;
+        text-align: center;
+        padding: 20px;
+        font-size: 50px;
         font-family: 'Amiri', 'Traditional Arabic', serif;
         color: #1b5e20;
-        background-color: #f1f8e9;
-        padding: 10px 20px;
-        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         cursor: pointer;
         transition: 0.3s;
-        border: 2px solid transparent;
     }
-    .qaida-item:hover {
-        background-color: #c8e6c9;
-        color: #000;
+    .qaida-cell:hover {
+        background-color: #e8f5e9;
         border-color: #2e7d32;
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
     </style>
 """, unsafe_allow_html=True)
 
 # --- SESSION STATE INITIALIZATION ---
 if 'selected_takhti' not in st.session_state:
-    st.session_state.selected_takhti = None
-if 'total_sessions' not in st.session_state:
-    st.session_state.total_sessions = 5
-if 'total_minutes' not in st.session_state:
-    st.session_state.total_minutes = 40
-if 'highlighted_letter' not in st.session_state:
-    st.session_state.highlighted_letter = "کوئی حرف منتخب کریں"
+    st.session_state.selected_takhti = "تختی نمبر 1: حروفِ مفردات"
+if 'language' not in st.session_state:
+    st.session_state.language = "اردو (Urdu)"
 
-# --- SIDEBAR: STUDENT PROFILE & DASHBOARD ---
-st.sidebar.header("📊 طالب علم کا ڈیش بورڈ")
-student_name = st.sidebar.text_input("طالب علم کا نام:", "مُعاذ عزیز")
+# --- SIDEBAR: MULTI-LINGUAL & NAVIGATION ---
+st.sidebar.header("⚙️ ترتیبات / Settings")
+st.session_state.language = st.sidebar.selectbox(
+    "زبان منتخب کریں / Select Language:",
+    ["اردو (Urdu)", "English", "العربية (Arabic)"]
+)
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📌 ایکٹیویٹی لاگ")
-st.sidebar.text(f"📅 داخلہ: 18 اکتوبر 2026")
-st.sidebar.text(f"⏱️ کل وقت: {st.session_state.total_minutes} منٹ")
-st.sidebar.text(f"📚 مکمل سیشنز: {st.session_state.total_sessions}")
+st.sidebar.header("📚 نورانی قاعدہ کورس")
+selected_takhti = st.sidebar.selectbox(
+    "تختی منتخب کریں:",
+    ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات (زبر، زیر، پیش)"]
+)
 
-if st.sidebar.button("🏠 مین صفحہ (تختیاں دیکھیں)"):
-    st.session_state.selected_takhti = None
+student_name = st.sidebar.text_input("طالب علم کا نام:", "مُعاذ عزیز")
 
-# --- COMPLETE NOORANI QAIDA DATABASE (Split into lists for clickable boxes) ---
-qaida_lessons = {
-    "تختی نمبر 1: حروفِ مفردات": {
-        "items": ["أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "و", "هـ", "ء", "ي"],
-        "desc": "حروفِ ہجائی کو الگ الگ اور درست مخارج سے ادا کریں۔ کسی بھی حرف پر کلک کر کے اسے نمایاں کریں۔"
-    },
-    "تختی نمبر 2: حروفِ مرکبات": {
-        "items": ["لا", "لـح", "لـم", "طم", "يس", "حم", "الم", "الر", "طه"],
-        "desc": "ملی ہوئی شکلوں والے حروف کی پہچان اور مشق۔"
-    },
-    "تختی نمبر 3: حرکات (زبر، زیر، پیش)": {
-        "items": ["أَ", "إِ", "أُ", "بَ", "بِ", "بُ", "تَ", "تِ", "تُ", "ثَ", "ثِ", "ثُ"],
-        "desc": "زبر، زیر اور پیش کو بغیر کھینچنے کے جلدی ادا کریں۔"
-    },
-    "تختی نمبر 4: تنوین (دو زبر، زیر، پیش)": {
-        "items": ["أَنْ", "أِنْ", "أُنْ", "بَنْ", "بِنْ", "بُنْ", "تَ تَنْ", "تِنْ"],
-        "desc": "تنوین یعنی آواز کے آخر میں نونِ ساکنہ کی ادائیگی۔"
-    }
+# --- DATA FOR TAKHTI 1 (As shown in reference image) ---
+takhti_1_data = {
+    "title_ur": "تختی نمبر 1: حروفِ مفردات",
+    "title_en": "Lesson No. 1: Huroof-e-Mufradat (Alphabets)",
+    "instruction_ur": "ہدایت: یہ حروفِ مفردات بنیاد ہیں[cite: 2]۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ دائیں سے بائیں اور اوپر سے نیچے کی طرف پڑھائیں۔",
+    "instruction_en": "Instruction: These are basic alphabets[cite: 2]. Practice correct pronunciation and letter points from right to left.",
+    "letters": ["ا", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "و", "هـ", "ء", "ي"]
 }
 
-# --- HEADER ---
-st.markdown("<h1 style='text-align: center; color: #2e7d32;'>📖 AI مکتب و مدرسہ - نورانی قاعدہ</h1>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align: center; color: #555; font-size: 18px;'>خوش آمدید، <b>{student_name}</b>! بچوں کے لیے انٹرایکٹو پڑھائی کا ماحول:</p>", unsafe_allow_html=True)
-st.divider()
-
-# --- MAIN VIEW LOGIC ---
-if st.session_state.selected_takhti is None:
-    # --- GRID VIEW (CARDS) ---
-    st.markdown("### 📚 نورانی قاعدے کی تختیاں (سبق منتخب کریں)")
-    
-    cols_per_row = 2
-    lessons_keys = list(qaida_lessons.keys())
-    
-    for i in range(0, len(lessons_keys), cols_per_row):
-        cols = st.columns(cols_per_row)
-        for j in range(cols_per_row):
-            if i + j < len(lessons_keys):
-                takhti_name = lessons_keys[i + j]
-                with cols[j]:
-                    st.markdown(f'<div class="card-title">📌 {takhti_name}</div>', unsafe_allow_html=True)
-                    st.info(f"کل حروف/الفاظ: {len(qaida_lessons[takhti_name]['items'])}")
-                    if st.button("یہ سبق کھولیں 📖", key=f"btn_{i+j}"):
-                        st.session_state.selected_takhti = takhti_name
-                        st.rerun()
-        st.markdown("<br>", unsafe_allow_html=True)
-
-else:
-    # --- INTERACTIVE LESSON VIEW ---
-    current_takhti = st.session_state.selected_takhti
-    lesson_info = qaida_lessons[current_takhti]
-    
-    if st.button("⬅️ تمام تختیوں کی طرف واپس جائیں"):
-        st.session_state.selected_takhti = None
-        st.rerun()
-        
-    st.markdown(f"## 🎯 {current_takhti}")
-    st.markdown(f"<p style='text-align: center; color: #444; font-size: 18px;'><b>💡 استاد کی ہدایت:</b> {lesson_info['desc']}</p>", unsafe_allow_html=True)
-    
-    # Session Timing Tracker
-    if 'session_start' not in st.session_state:
-        st.session_state.session_start = time.time()
-    elapsed = int(time.time() - st.session_state.session_start)
-    
-    # --- INTERACTIVE CLICKABLE LETTERS BOARD ---
-    st.markdown("### 👇 جس حرف کو پڑھنا ہو، اس پر کلک کریں:")
-    
-    # Displaying interactive buttons for each letter so child can click and highlight it
-    cols_in_grid = 6
-    items = lesson_info["items"]
-    
-    for r in range(0, len(items), cols_in_grid):
-        c_cols = st.columns(cols_in_grid)
-        for c in range(cols_in_grid):
-            if r + c < len(items):
-                letter = items[r + c]
-                with c_cols[c]:
-                    if st.button(letter, key=f"ltr_{r+c}"):
-                        st.session_state.highlighted_letter = letter
-                        
-    # Highlighted Notice Box
+# --- HEADER SECTION ---
+if st.session_state.language == "English":
     st.markdown(f"""
-        <div style="padding: 15px; border-radius: 10px; background-color: #e3f2fd; border-left: 5px solid #1976d2; font-size: 20px; color: #0d47a1; text-align: center; margin-top: 20px;">
-            ✨ <b>منتخب کردہ حرف (Highlighted):</b> <span style="font-size: 32px; font-weight: bold; color: #b71c1c;">{st.session_state.highlighted_letter}</span>
+        <div class="qaida-header">
+            <h1>📖 AI Madrassa - Digital Noorani Qaida</h1>
+            <p>Interactive Learning Platform for Kids (Multi-lingual)</p>
         </div>
     """, unsafe_allow_html=True)
-    
-    st.divider()
-    
-    # --- AUDIO RECORDING & EVALUATION ---
-    st.markdown("### 🎙️ اپنی آواز میں پڑھ کر سنائیں")
-    audio_val = st.audio_input("ریکارڈنگ کے لیے کلک کریں:")
-    
-    if audio_val is not None:
-        st.audio(audio_val)
-        with st.spinner("🤖 AI استاد آپ کی آواز کا جائزہ لے رہا ہے..."):
-            time.sleep(2)
-            
-        st.session_state.total_sessions += 1
-        st.session_state.total_minutes += 5
+    st.markdown(f"""
+        <div class="instruction-box" style="direction: ltr;">
+            <b>💡 {takhti_1_data['title_en']}</b><br>
+            {takhti_1_data['instruction_en']}
+        </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown(f"""
+        <div class="qaida-header">
+            <h1>📖 AI مکتب و مدرسہ - ڈیجیٹل نورانی قاعدہ</h1>
+            <p>بچوں کے لیے روایتی اور جدید ڈیجیٹل انداز میں قرآن سیکھنے کا پلیٹ فارم</p>
+        </div>
+    """, unsafe_allow_html=True)
+    st.markdown(f"""
+        <div class="instruction-box">
+            <b>💡 {takhti_1_data['title_ur']}</b><br>
+            {takhti_1_data['instruction_ur']}[cite: 2]
+        </div>
+    """, unsafe_allow_html=True)
+
+st.subheader(f"👋 خوش آمدید، {student_name}!")
+st.write("نیچے دیے گئے قاعدے کے خانوں (Grid) سے حروف پڑھیں اور آواز ریکارڈ کروائیں:")
+
+# --- TRADITIONAL QAIDA GRID VIEW ---
+st.markdown("### 🔠 تختی کے حروف (Clickable Grid)")
+
+# Displaying letters in a structured grid columns like a book page
+cols_count = 5
+letters = takhti_1_data["letters"]
+
+for i in range(0, len(letters), cols_count):
+    cols = st.columns(cols_count)
+    for j in range(cols_count):
+        if i + j < len(letters):
+            ltr = letters[i + j]
+            with cols[j]:
+                if st.button(ltr, key=f"grid_ltr_{i+j}", use_container_width=True):
+                    st.success(f"آپ نے حرف **{ltr}** منتخب کیا ہے!")
+
+st.divider()
+
+# --- AUDIO RECORDING & EVALUATION MODULE ---
+st.markdown("### 🎙️ تختی پڑھ کر سنائیں (Practice & Test)")
+audio_val = st.audio_input("مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:")
+
+if audio_val is not None:
+    st.audio(audio_val)
+    with st.spinner("🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے..."):
+        time.sleep(2)
         
-        st.markdown(f"""
-            <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
-                <b>🌟 ماشاءاللہ بہت شاندار، {student_name}!</b><br>
-                • آپ نے <b>{current_takhti}</b> کی مشق کامیابی سے مکمل کی ہے۔<br>
-                • <b>اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
-            </div>
-        """, unsafe_allow_html=True)
-        st.balloons()
-        
-        # Parent Report Section
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("### 📩 والدین کو پروگریس رپورٹ بھیجیں")
-        p_email = st.text_input("والدین کی ای میل (Parent Email):", "parent@example.com")
-        if st.button("📤 رپورٹ ارسال کریں"):
-            st.success(f"✅ {student_name} کی رپورٹ ({current_takhti}) کامیابی سے {p_email} پر بھیج دی گئی ہے!")
+    st.markdown("""
+        <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
+            <b>🌟 ماشاءاللہ بہت زبردست تلفظ ہے!</b><br>
+            • حروفِ مفردات کی ادائیگی بالکل درست رہی۔<br>
+            • <b>اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
+        </div>
+    """, unsafe_allow_html=True)
+    st.balloons()
+    
+    # Parent report section
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### 📩 والدین کو رپورٹ بھیجیں")
+    p_email = st.text_input("والدین کی ای میل:", "parent@example.com")
+    if st.button("📤 رپورٹ ارسال کریں"):
+        st.success(f"✅ رپورٹ کامیابی سے {p_email} پر ارسال کر دی گئی ہے!")
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("<p style='text-align: center; font-size: 12px; color: #888;'>AI Madrassa LMS • Powered by Python & Streamlit</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 12px; color: #888;'>AI Madrassa Multi-lingual Edition • Powered by Streamlit</p>", unsafe_allow_html=True)
