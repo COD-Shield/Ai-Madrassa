@@ -12,12 +12,13 @@ st.set_page_config(
 TRANSLATIONS = {
     "اردو (Urdu)": {
         "app_title": "📖 AI مکتب و مدرسہ (Digital Noorani Qaida)",
-        "onboarding_title": "👋 خوش آمدید! طالب علم کی پروفائل بنائیں",
+        "onboarding_title": "👋 خوش آمدید! پروفائل منتخب کریں",
         "name_prompt": "طالب علم کا نام درج کریں:",
         "lang_prompt": "زبان منتخب کریں (Select Language):",
         "start_btn": "سبق شروع کریں 🚀",
         "sidebar_header": "⚙️ گلوبل ترتیبات (Settings)",
         "change_profile": "پروفائل تبدیل کریں",
+        "student_label": "طالب علم",
         "takhti_title": "تختی نمبر 1 ـــ حروفِ مفردات",
         "bismillah": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
         "hidayat_title": "ہدایات:",
@@ -26,16 +27,19 @@ TRANSLATIONS = {
         "mic_text": "مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:",
         "ai_check": "🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے...",
         "success_msg": "🌟 ماشاءاللہ بہت زبردست تلفظ ہے! حروفِ مفردات کی ادائیگی بالکل درست رہی۔ اسکور: ⭐⭐⭐⭐⭐ (5/5)",
+        "admin_tab": "🛠️ ایڈمن پینل (Admin Panel)",
+        "qaida_tab": "📖 نورانی قاعدہ (Qaida)",
         "dir": "rtl"
     },
     "English": {
         "app_title": "📖 AI Maktab o Madrassa (Digital Noorani Qaida)",
-        "onboarding_title": "👋 Welcome! Setup Student Profile",
+        "onboarding_title": "👋 Welcome! Select Profile",
         "name_prompt": "Enter Student Name:",
         "lang_prompt": "Select Language:",
         "start_btn": "Start Lesson 🚀",
         "sidebar_header": "⚙️ Global Settings",
         "change_profile": "Change Profile",
+        "student_label": "Student",
         "takhti_title": "Lesson No. 1 - Basic Alphabets",
         "bismillah": "Bismillah-ir-Rahman-ir-Rahim",
         "hidayat_title": "Instruction:",
@@ -44,17 +48,22 @@ TRANSLATIONS = {
         "mic_text": "Click on the microphone to record recitation:",
         "ai_check": "🤖 AI Teacher is reviewing your pronunciation...",
         "success_msg": "🌟 Mashallah wonderful pronunciation! Basic alphabets recited accurately. Score: ⭐⭐⭐⭐⭐ (5/5)",
+        "admin_tab": "🛠️ Admin Panel",
+        "qaida_tab": "📖 Noorani Qaida",
         "dir": "ltr"
     }
 }
 
-# --- INITIALIZE SESSION STATE FOR LOGIN / ONBOARDING ---
+# --- INITIALIZE SESSION STATE ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "student_name" not in st.session_state:
     st.session_state.student_name = "مُعاذ عزیز"
 if "language" not in st.session_state:
     st.session_state.language = "اردو (Urdu)"
+
+lang = st.session_state.language
+t = TRANSLATIONS[lang]
 
 # --- 1. LOGIN / ONBOARDING SCREEN ---
 if not st.session_state.logged_in:
@@ -75,11 +84,7 @@ if not st.session_state.logged_in:
             st.rerun()
 
 else:
-    # --- 2. MAIN APPLICATION (AFTER LOGIN) ---
-    lang = st.session_state.language
-    t = TRANSLATIONS[lang]
-    
-    # Global CSS matching the book page layout
+    # --- 2. MAIN APPLICATION & ADMIN PANEL ---
     st.markdown(f"""
         <style>
         .main {{
@@ -173,13 +178,12 @@ else:
     # --- SIDEBAR GLOBAL CONTROLS ---
     st.sidebar.header(t["sidebar_header"])
     
-    # Global Language Switcher (Changes entire app instantly like COD Shield)
     new_lang = st.sidebar.selectbox(t["lang_prompt"], list(TRANSLATIONS.keys()), index=list(TRANSLATIONS.keys()).index(lang))
     if new_lang != lang:
         st.session_state.language = new_lang
         st.rerun()
         
-    st.sidebar.markdown(f"**👤 {t['student_name'].replace(':', '')}:** {st.session_state.student_name}")
+    st.sidebar.markdown(f"**👤 {t['student_label']}:** {st.session_state.student_name}")
     
     selected_takhti = st.sidebar.selectbox(
         t["select_takhti_label"],
@@ -190,102 +194,115 @@ else:
         st.session_state.logged_in = False
         st.rerun()
 
-    # --- QAIDA DATA ---
-    takhti_1_letters = [
-        {"ar": "ا", "name": "Alif", "color": "#e53935"},
-        {"ar": "ب", "name": "Ba", "color": "#000000"},
-        {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
-        {"ar": "ث", "name": "Tha", "color": "#00897b"},
-        {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
-        {"ar": "ح", "name": "Ha", "color": "#d81b60"},
-        {"ar": "خ", "name": "Kha", "color": "#43a047"},
-        {"ar": "د", "name": "Dal", "color": "#e91e63"},
-        {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
-        {"ar": "ر", "name": "Ra", "color": "#43a047"},
-        {"ar": "ز", "name": "Za", "color": "#1e88e5"},
-        {"ar": "س", "name": "Seen", "color": "#d81b60"},
-        {"ar": "ش", "name": "Sheen", "color": "#000000"},
-        {"ar": "ص", "name": "Sad", "color": "#00897b"},
-        {"ar": "ض", "name": "Dad", "color": "#43a047"},
-        {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
-        {"ar": "ظ", "name": "Za", "color": "#00897b"},
-        {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
-        {"ar": "غ", "name": "Ghain", "color": "#e53935"},
-        {"ar": "ف", "name": "Fa", "color": "#d81b60"},
-        {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
-        {"ar": "ك", "name": "Kaf", "color": "#43a047"},
-        {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
-        {"ar": "م", "name": "Meem", "color": "#8e24aa"},
-        {"ar": "ن", "name": "Noon", "color": "#00897b"},
-        {"ar": "و", "name": "Waw", "color": "#e53935"},
-        {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
-        {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
-        {"ar": "ي", "name": "Ya", "color": "#000000"}
-    ]
+    # --- TABS FOR QAIDA & ADMIN PANEL ---
+    tab1, tab2 = st.tabs([t["qaida_tab"], t["admin_tab"]])
 
-    # --- RENDER BOOK PAGE CONTAINER ---
-    html_code = f"""
-    <div class="qaida-book-container">
-        <div class="qaida-header-banner">{t['takhti_title']}</div>
-        <div class="bismillah-banner">{t['bismillah']}</div>
-        <div class="hidayat-box">
-            <span class="hidayat-title">{t['hidayat_title']}</span> {t['hidayat_text']}
-        </div>
-        <table class="qaida-table">
-    """
+    with tab1:
+        takhti_1_letters = [
+            {"ar": "ا", "name": "Alif", "color": "#e53935"},
+            {"ar": "ب", "name": "Ba", "color": "#000000"},
+            {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
+            {"ar": "ث", "name": "Tha", "color": "#00897b"},
+            {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
+            {"ar": "ح", "name": "Ha", "color": "#d81b60"},
+            {"ar": "خ", "name": "Kha", "color": "#43a047"},
+            {"ar": "د", "name": "Dal", "color": "#e91e63"},
+            {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
+            {"ar": "ر", "name": "Ra", "color": "#43a047"},
+            {"ar": "ز", "name": "Za", "color": "#1e88e5"},
+            {"ar": "س", "name": "Seen", "color": "#d81b60"},
+            {"ar": "ش", "name": "Sheen", "color": "#000000"},
+            {"ar": "ص", "name": "Sad", "color": "#00897b"},
+            {"ar": "ض", "name": "Dad", "color": "#43a047"},
+            {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
+            {"ar": "ظ", "name": "Za", "color": "#00897b"},
+            {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
+            {"ar": "غ", "name": "Ghain", "color": "#e53935"},
+            {"ar": "ف", "name": "Fa", "color": "#d81b60"},
+            {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
+            {"ar": "ك", "name": "Kaf", "color": "#43a047"},
+            {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
+            {"ar": "م", "name": "Meem", "color": "#8e24aa"},
+            {"ar": "ن", "name": "Noon", "color": "#00897b"},
+            {"ar": "و", "name": "Waw", "color": "#e53935"},
+            {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
+            {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
+            {"ar": "ي", "name": "Ya", "color": "#000000"}
+        ]
 
-    cols_per_row = 5
-    total_items = len(takhti_1_letters)
-
-    for i in range(0, total_items, cols_per_row):
-        row_items = takhti_1_letters[i:i + cols_per_row]
-        html_code += '<tr>'
-        
-        if len(row_items) < cols_per_row:
-            empty_slots = cols_per_row - len(row_items)
-            left_pad = empty_slots // 2
-            right_pad = empty_slots - left_pad
-            
-            for _ in range(left_pad):
-                html_code += '<td style="border: none;"></td>'
-                
-            for item in row_items:
-                html_code += f'''
-                    <td class="qaida-td">
-                        <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-                        <div class="ltr-name">{item['name']}</div>
-                    </td>
-                '''
-            for _ in range(right_pad):
-                html_code += '<td style="border: none;"></td>'
-        else:
-            for item in row_items:
-                html_code += f'''
-                    <td class="qaida-td">
-                        <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-                        <div class="ltr-name">{item['name']}</div>
-                    </td>
-                '''
-        html_code += '</tr>'
-
-    html_code += '</table></div>'
-    
-    st.markdown(html_code, unsafe_allow_html=True)
-    
-    st.divider()
-
-    # --- PRACTICE & TEST MODULE ---
-    st.markdown(f"### 🎙️ {st.session_state.student_name} - {t['mic_text']}")
-    audio_val = st.audio_input(t["mic_text"])
-
-    if audio_val is not None:
-        st.audio(audio_val)
-        with st.spinner(t["ai_check"]):
-            time.sleep(2)
-            
-        st.markdown(f"""
-            <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
-                {t['success_msg']}
+        html_code = f"""
+        <div class="qaida-book-container">
+            <div class="qaida-header-banner">{t['takhti_title']}</div>
+            <div class="bismillah-banner">{t['bismillah']}</div>
+            <div class="hidayat-box">
+                <span class="hidayat-title">{t['hidayat_title']}</span> {t['hidayat_text']}
             </div>
-        """, unsafe_allow_html=True)
-        st.balloons()
+            <table class="qaida-table">
+        """
+
+        cols_per_row = 5
+        total_items = len(takhti_1_letters)
+
+        for i in range(0, total_items, cols_per_row):
+            row_items = takhti_1_letters[i:i + cols_per_row]
+            html_code += '<tr>'
+            
+            if len(row_items) < cols_per_row:
+                empty_slots = cols_per_row - len(row_items)
+                left_pad = empty_slots // 2
+                right_pad = empty_slots - left_pad
+                
+                for _ in range(left_pad):
+                    html_code += '<td style="border: none;"></td>'
+                    
+                for item in row_items:
+                    html_code += f'''
+                        <td class="qaida-td">
+                            <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
+                            <div class="ltr-name">{item['name']}</div>
+                        </td>
+                    '''
+                for _ in range(right_pad):
+                    html_code += '<td style="border: none;"></td>'
+            else:
+                for item in row_items:
+                    html_code += f'''
+                        <td class="qaida-td">
+                            <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
+                            <div class="ltr-name">{item['name']}</div>
+                        </td>
+                    '''
+            html_code += '</tr>'
+
+        html_code += '</table></div>'
+        
+        st.markdown(html_code, unsafe_allow_html=True)
+        
+        st.divider()
+
+        st.markdown(f"### 🎙️ {st.session_state.student_name} - {t['mic_text']}")
+        audio_val = st.audio_input(t["mic_text"])
+
+        if audio_val is not None:
+            st.audio(audio_val)
+            with st.spinner(t["ai_check"]):
+                time.sleep(2)
+                
+            st.markdown(f"""
+                <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
+                    {t['success_msg']}
+                </div>
+            """, unsafe_allow_html=True)
+            st.balloons()
+
+    with tab2:
+        st.markdown("### 🛠️ Admin & Teacher Control Panel")
+        st.info("Here admin and teachers can manage student progress and curriculum settings.")
+        
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.metric(label="Active Students", value="1")
+            st.metric(label="Completed Lessons", value="Takhti 1")
+        with col_b:
+            st.success(f"Current Logged-in Student: **{st.session_state.student_name}**")
+            st.warning("AI Pronunciation Model: Active (v2.1)")
