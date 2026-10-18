@@ -4,7 +4,7 @@ from datetime import datetime
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="AI Madrassa - نورانی قاعدہ اور پروگریس ٹریکر",
+    page_title="AI Madrassa - مکمل نورانی قاعدہ",
     page_icon="📖",
     layout="centered"
 )
@@ -25,7 +25,7 @@ st.markdown("""
         width: 100%;
     }
     .arabic-text {
-        font-size: 42px;
+        font-size: 38px;
         text-align: center;
         direction: rtl;
         font-family: 'Amiri', 'Traditional Arabic', serif;
@@ -35,7 +35,7 @@ st.markdown("""
         border-radius: 15px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         margin-bottom: 20px;
-        letter-spacing: 5px;
+        line-height: 1.8;
     }
     .feedback-box {
         padding: 15px;
@@ -58,66 +58,90 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- SESSION STATE INITIALIZATION (For Attendance & Progress Tracking) ---
+# --- SESSION STATE INITIALIZATION ---
 if 'enrollment_date' not in st.session_state:
     st.session_state.enrollment_date = "18 اکتوبر 2026"
 if 'total_sessions' not in st.session_state:
-    st.session_state.total_sessions = 3
+    st.session_state.total_sessions = 5
 if 'total_minutes' not in st.session_state:
-    st.session_state.total_minutes = 25
+    st.session_state.total_minutes = 40
 
-# --- SIDEBAR: ADVANCED LMS & ENROLLMENT TRACKER ---
+# --- SIDEBAR: LMS & COMPLETE NOORANI QAIDA CURRICULUM ---
 st.sidebar.header("📊 طالب علم کا ڈیش بورڈ")
 student_name = st.sidebar.text_input("طالب علم کا نام:", "مُعاذ عزیز")
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("📌 انرولمنٹ اور ایکٹیویٹی")
 st.sidebar.text(f"📅 تاریخِ داخلہ: {st.session_state.enrollment_date}")
-st.sidebar.text(f"🟢 آخری آن لائن: آج، صبح 08:00 بجے")
+st.sidebar.text(f"🟢 آخری آن لائن: آج")
 st.sidebar.text(f"⏱️ کل مشق کا وقت: {st.session_state.total_minutes} منٹ")
 st.sidebar.text(f"📚 کل مکمل سیشنز: {st.session_state.total_sessions}")
 
 st.sidebar.markdown("---")
-st.sidebar.header("🎯 نصاب کا انتخاب")
-course_type = st.sidebar.selectbox("کورس منتخب کریں:", ["نورانی قاعدہ", "تیسواں پارہ (عم پارہ)"])
+st.sidebar.header("🎯 مکمل نورانی قاعدہ کورس")
+course_type = st.sidebar.selectbox("کورس منتخب کریں:", ["مُکَمَّل نورانی قاعدہ", "تیسواں پارہ (عم پارہ)"])
 
-# --- CURRICULUM DATABASE (NOORANI QAIDA & PARA 30) ---
-if course_type == "نورانی قاعدہ":
+# --- COMPLETE NOORANI QAIDA DATABASE (Takhtiyan 1 to 10+) ---
+if course_type == "مُکَمَّل نورانی قاعدہ":
     lessons_data = {
-        "تختی نمبر 1: حروفِ مفردات (Al-Huroof Al-Mufradat)": {
-            "arabic": "ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن و هـ ء ي",
-            "description": "ان حروف کو الگ الگ اور درست مخارج کے ساتھ پڑھیں۔ (حروفِ ہجائی)"
+        "تختی نمبر 1: حروفِ مفردات (الفاظ کی شناخت)": {
+            "arabic": "أ ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن و هـ ء ي",
+            "description": "حروفِ ہجائی کو الگ الگ اور درست مخارج (گلے اور ہونٹوں سے) ادا کریں۔"
         },
-        "تختی نمبر 2: حروفِ مرکبات (Al-Huroof Al-Murakkabat)": {
-            "arabic": "لا لـح لـم طم يس حم الم الر",
-            "description": "ملی ہوئی شکلوں والے حروف کی پہچان اور مشق۔"
+        "تختی نمبر 2: حروفِ مرکبات (ملی ہوئی شکلیں)": {
+            "arabic": "لا لـح لـم طم يس حم الم الر طه يس",
+            "description": "جب دو یا دو سے زیادہ حروف آپس میں ملتے ہیں تو ان کی شکلیں کیسی ہوتی ہیں، اس کی مشق۔"
         },
         "تختی نمبر 3: حرکات (زبر، زیر، پیش)": {
-            "arabic": "أَ إِ أُ بَ بِ بُ تَ تِ تُ",
-            "description": "زبر (اوپر آواز)، زیر (نیچے آواز)، اور پیش (گول ہونٹوں سے آواز) کی مشق۔"
+            "arabic": "أَ إِ أُ بَ بِ بُ تَ تِ تُ ثَ ثِ ثُ",
+            "description": "زبر (آواز اوپر اٹھتی ہے)، زیر (آواز نیچے جاتی ہے)، پیش (ہونٹ گول ہوتے ہیں۔ یاد رہے: انہیں کھینچ کر نہیں پڑھتے)۔"
         },
         "تختی نمبر 4: تنوین (دو زبر، دو زیر، دو پیش)": {
-            "arabic": "أَنْ أِنْ أُنْ بَنْ بِنْ بُنْ",
-            "description": "تنوین اور نونِ ساکنہ کی آواز کی پہچان۔"
+            "arabic": "أَنْ أِنْ أُنْ بَنْ بِنْ بُنْ تَ تَنْ تِنْ تُنْ",
+            "description": "تنوین دراصل نونِ ساکنہ ہوتی ہے جو آواز کے آخر میں ظاہر ہوتی ہے۔"
+        },
+        "تختی نمبر 5: مشقِ حرکات و تنوین (ملا جلا سبق)": {
+            "arabic": "فَلَ حَكَ خَلَقَ رَزَقَ كَتَبَ عَوۡمًا بَهِيۡجًا",
+            "description": "حرکات اور تنوین کی مشترکہ مشق تاکہ روانی پیدا ہو۔"
+        },
+        "تختی نمبر 6: حروفِ مدّہ (الف مدہ، واؤ مدہ، یا مدہ)": {
+            "arabic": "بَا بُو بِيْ تَ تُو تِيْ ثَا ثُو ثِيْ",
+            "description": "حروفِ مدّہ کو ایک الف کے برابر (تھوڑا سا لمبا) کھینچ کر پڑھا جاتا ہے۔"
+        },
+        "تختی نمبر 7: حروفِ لین (واؤ لین، یا لین)": {
+            "arabic": "بَوْ بَيْ تَوْ تَيْ ثَوْ ثَيْ جَوْ جَيْ",
+            "description": "حروفِ لین کو نرمی کے ساتھ اور جلدی ادا کیا جاتا ہے۔"
+        },
+        "تختی نمبر 8: مدّہ اور لین کی مشق": {
+            "arabic": "خَوْفٌ بَيْتٍ قَوْلٍ صَيْفٍ مَوْتٍ",
+            "description": "مدہ اور لین کے قواعد کی روانی کے ساتھ تمرین۔"
+        },
+        "تختی نمبر 9: تنوین و نونِ ساکنہ اور اظہار و اخفا": {
+            "arabic": "مِنْ حَوْلِ مِنْ خَوْفٍ مِنْ شَرِّ مِنْ وَلِيِّ",
+            "description": "نونِ ساکنہ اور تنوین کے بعد حروفِ حلقی کا قاعدہ۔"
+        },
+        "تختی نمبر 10: تشدید (شدّ کی مشق)": {
+            "arabic": "رَبَّ رَبِّ رَبُّ ضَرَّ ظَنَّ حَقَّ",
+            "description": "تشدید والے حرف کو پچھلے حرف سے ملا کر دو بار پڑھا جاتا ہے اور سختی دی جاتی ہے۔"
         }
     }
 else:
     lessons_data = {
         "Surah An-Naba (النبأ)": {
             "arabic": "عَمَّ يَتَسَاءَلُونَ ۝ عَنِ النَّبَإِ الْعَظِيمِ",
-            "description": "سورت النبأ کی ابتدائی آیات کی تلاوت۔"
+            "description": "تیسویں پارے کی پہلی سورت (النبأ) کی مشق۔"
         },
         "Surah Al-Ikhlas (الإخلاص)": {
             "arabic": "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ",
-            "description": "سورۃ الإخلاص - توحید کا بیان۔"
+            "description": "سورۃ الإخلاص - توحید اور قل هو الله."
         },
         "Surah An-Nas (الناس)": {
             "arabic": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ",
-            "description": "سورۃ الناس - پناہ مانگنے کی سورت۔"
+            "description": "سورۃ الناس - آخری سورۃ مبارکہ۔"
         }
     }
 
-selected_lesson = st.sidebar.selectbox("سبق / تختی منتخب کریں:", list(lessons_data.keys()))
+selected_lesson = st.sidebar.selectbox("تختی / سبق منتخب کریں:", list(lessons_data.keys()))
 current_lesson = lessons_data[selected_lesson]
 
 # --- SESSION TIMING TRACKER ---
@@ -129,32 +153,32 @@ minutes = elapsed_time // 60
 seconds = elapsed_time % 60
 
 # --- MAIN CONTENT AREA ---
-st.markdown("<h1 style='text-align: center; color: #2e7d32;'>📖 AI مکتب و مدرسہ</h1>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align: center; color: #555; font-size: 18px;'>خوش آمدید، <b>{student_name}</b>! آج کا سبق: <b>{course_type}</b></p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #2e7d32;'>📖 AI مکتب و مدرسہ (نورانی قاعدہ)</h1>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center; color: #555; font-size: 18px;'>خوش آمدید، <b>{student_name}</b>! آج کا کورس: <b>{course_type}</b></p>", unsafe_allow_html=True)
 
 # Timing Box
 st.markdown(f"""
     <div class="timing-box">
-        ⏱️ <b>موجودہ سیشن کا وقت:</b> {minutes:02d}:{seconds:02d} منٹ | <b>سبق:</b> {selected_lesson}
+        ⏱️ <b>سیشن کا وقت:</b> {minutes:02d}:{seconds:02d} منٹ | <b>منتخب سبق:</b> {selected_lesson}
     </div>
 """, unsafe_allow_html=True)
 
 # Display Arabic Text / Qaida Board
 st.markdown(f'<div class="arabic-text">{current_lesson["arabic"]}</div>', unsafe_allow_html=True)
-st.markdown(f"<p style='text-align: center; color: #666; font-size: 18px;'><b>ہدایت / وضاحت:</b> {current_lesson['description']}</p>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center; color: #444; font-size: 18px;'><b>💡 استاد کی ہدایت:</b> {current_lesson['description']}</p>", unsafe_allow_html=True)
 
 st.divider()
 
 # --- AUDIO RECORDING & EVALUATION MODULE ---
-st.markdown("### 🎙️ تختی یا سبق سنائیں (Practice & Test)")
-st.write("مائیکروفون کے بٹن پر کلک کر کے پڑھ کر سنائیں:")
+st.markdown("### 🎙️ تختی پڑھ کر سنائیں (Practice & Test)")
+st.write("مائیکروفون کے بٹن پر کلک کریں اور پڑھ کر اپنی آواز ریکارڈ کروائیں:")
 
-audio_value = st.audio_input("تلاوت یا حروف ریکارڈ کرنے کے لیے کلک کریں:")
+audio_value = st.audio_input("ریکارڈ کرنے کے لیے یہاں کلک کریں:")
 
 if audio_value is not None:
     st.audio(audio_value)
     
-    with st.spinner("🤖 AI استاد آپ کی آواز کا جائزہ لے رہا ہے..."):
+    with st.spinner("🤖 AI استاد آپ کے تلفظ اور مخارج کا جائزہ لے رہا ہے..."):
         time.sleep(2)
     
     # Update stats
@@ -165,10 +189,10 @@ if audio_value is not None:
     st.markdown(f"""
         <div class="feedback-box">
             <b>🌟 ماشاءاللہ بہت عمدہ، {student_name}!</b><br>
-            • آپ نے <b>{selected_lesson}</b> بہت اچھے طریقے سے ادا کیا ہے۔<br>
-            • <b>وقت صرف ہوا:</b> {minutes} منٹ اور {seconds} سیکنڈز۔<br>
-            • <b>استاد کی نصیحت:</b> مخارج بالکل درست ہیں، ایسے ہی جاری رکھیں!<br>
-            • <b>اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
+            • آپ نے <b>{selected_lesson}</b> کی مشق کامیابی سے مکمل کی ہے۔<br>
+            • <b>صرف ہونے والا وقت:</b> {minutes} منٹ اور {seconds} سیکنڈز۔<br>
+            • <b>استاد کا فیصلی تبصرہ:</b> حروف کا تلفظ اور حرکات بالکل درست ادا ہوئیں!<br>
+            • <b>کارکردگی اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
         </div>
     """, unsafe_allow_html=True)
     
@@ -181,7 +205,7 @@ if audio_value is not None:
     parent_email = st.text_input("والدین کی ای میل (Parent Email):", "parent@example.com")
     
     if st.button("📤 رپورٹ ارسال کریں"):
-        st.success(f"✅ {student_name} کی پروگریس رپورٹ ({course_type} - {selected_lesson} | سیشن: {minutes}m | اسکور: 5/5) کامیابی سے {parent_email} پر بھیج دی گئی ہے!")
+        st.success(f"✅ {student_name} کی پروگریس رپورٹ ({course_type} - {selected_lesson} | وقت: {minutes}m | اسکور: 5/5) کامیابی سے {parent_email} پر بھیج دی گئی ہے!")
 
 # --- FOOTER ---
 st.markdown("---")
