@@ -178,7 +178,7 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
     st.markdown(
         """
         <div style="background: #ffffff; border-right: 6px solid #047857; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); direction: rtl; text-align: right;">
-            <strong>ہدایات:</strong> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے تلفظ بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے[cite: 5].
+            <strong>ہدایات:</strong> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف یا لفظ کے نیچے دیے گئے تلفظ بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔
         </div>
     """,
         unsafe_allow_html=True,
@@ -209,103 +209,72 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ----------------- TAKHTI 1: Huroof-e-Mufradat (Complete A-Y) -----------------
-    if selected_takhti == "تختی نمبر 1: حروف مفردات (ا، ب، ت...)":
-        st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 1 - حروف مفردات</h3>",
-            unsafe_allow_html=True,
-        )
 
-        # Helper function to render a row of letters (Right to Left)
-        def render_letters_row(letters_data):
-            cols = st.columns(len(letters_data))
-            for idx, (char, name) in enumerate(reversed(letters_data)):
+    def render_grid_rows(rows_data):
+        for row in rows_data:
+            cols = st.columns(len(row))
+            for idx, (char, name) in enumerate(reversed(row)):
                 with cols[idx]:
                     st.markdown(
-                        f'<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">{char}</h1><p style="font-size:0.85rem; margin:2px 0;">{name}</p></div>',
+                        f'<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2rem; margin:0;">{char}</h1><p style="font-size:0.8rem; margin:2px 0; color:#475569;">{name}</p></div>',
                         unsafe_allow_html=True,
                     )
-                    st.button(f"🔊 {char}", key=f"t1_{char}", use_container_width=True)
+                    st.button(f"🔊 {char}", key=f"btn_{char}_{idx}", use_container_width=True)
 
-        # Complete Huroof-e-Mufradat rows from PDF (Takhti 1)[cite: 5]
-        row1 = [("ا", "Alif"), ("ب", "Ba"), ("ت", "Ta"), ("ث", "Tha"), ("ج", "Jeem")]
-        row2 = [("ح", "Ha"), ("خ", "Kha"), ("د", "Dal"), ("ذ", "Zal"), ("ر", "Ra")]
-        row3 = [("ز", "Za"), ("س", "Seen"), ("ش", "Sheen"), ("ص", "Sad"), ("ض", "Dad")]
-        row4 = [("ط", "Ta"), ("ظ", "Za"), ("ع", "Aen"), ("غ", "Ghaen"), ("ف", "Fa")]
-        row5 = [("ق", "Qaf"), ("ك", "Kaf"), ("ل", "Lam"), ("م", "Meem"), ("ن", "Noon")]
-        row6 = [("و", "Wao"), ("ه", "Ha"), ("ء", "Hamza"), ("ي", "Ya"), ("ى", "Ya")]
 
-        render_letters_row(row1)
-        render_letters_row(row2)
-        render_letters_row(row3)
-        render_letters_row(row4)
-        render_letters_row(row5)
-        render_letters_row(row6)
+    # ----------------- TAKHTI 1: Huroof-e-Mufradat -----------------
+    if selected_takhti == "تختی نمبر 1: حروف مفردات (ا، ب، ت...)":
+        st.markdown("<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 1 - حروف مفردات (بنیادی حروف)[cite: 5]</h3>", unsafe_allow_html=True)
+        render_grid_rows([
+            [("ا", "Alif"), ("ب", "Ba"), ("ت", "Ta"), ("ث", "Tha"), ("ج", "Jeem")],
+            [("ح", "Ha"), ("خ", "Kha"), ("د", "Dal"), ("ذ", "Zal"), ("ر", "Ra")],
+            [("ز", "Za"), ("س", "Seen"), ("ش", "Sheen"), ("ص", "Sad"), ("ض", "Dad")],
+            [("ط", "Ta"), ("ظ", "Za"), ("ع", "Aen"), ("غ", "Ghaen"), ("ف", "Fa")],
+            [("ق", "Qaf"), ("ك", "Kaf"), ("ل", "Lam"), ("م", "Meem"), ("ن", "Noon")],
+            [("و", "Wao"), ("ه", "Ha"), ("ء", "Hamza"), ("ي", "Ya"), ("ى", "Ya")]
+        ])
 
     # ----------------- TAKHTI 2: Huroof-e-Murakkabat -----------------
     elif selected_takhti == "تختی نمبر 2: حروف مرکبات (ملے ہوئے حروف)":
-        st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 2 - حروف مرکبات (ملے ہوئے حروف)</h3>",
-            unsafe_allow_html=True,
-        )
-        c1, c2, c3, c4 = st.columns(4)
-        with c4:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">لا</h1><p>Lam-Alif</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 لا", key="t2_1", use_container_width=True)
-        with c3:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">لا</h1><p>La</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 لا2", key="t2_2", use_container_width=True)
-        with c2:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">بكت</h1><p>Ba-Ka-Ta</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 بکت", key="t2_3", use_container_width=True)
-        with c1:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">تلث</h1><p>Ta-La-Tha</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 تلث", key="t2_4", use_container_width=True)
+        st.markdown("<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 2 - حروف مرکبات (جڑے ہوئے حروف کی مشق)[cite: 6]</h3>", unsafe_allow_html=True)
+        render_grid_rows([
+            [("لا", "Lam-Alif"), ("لا", "La"), ("بكت", "Ba-Ka-Ta"), ("تلث", "Ta-La-Tha")],
+            [("ح", "Ha-Compound"), ("لا", "La-Middle"), ("كپ", "Kaf-Pa"), ("تس", "Ta-Seen")],
+            [("بم", "Ba-Meem"), ("يتل", "Ya-Ta-Lam"), ("حبت", "Ha-Ba-Ta"), ("يهب", "Ya-Ha-Ba")]
+        ])
 
     # ----------------- TAKHTI 3: Huroof-e-Muqatta'at -----------------
     elif selected_takhti == "تختی نمبر 3: حروف مقطعات":
-        st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 3 - حروف مقطعات</h3>",
-            unsafe_allow_html=True,
-        )
-        c1, c2, c3 = st.columns(3)
-        with c3:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">الم</h1><p>Alif-Laam-Meem</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 الم", key="t3_1", use_container_width=True)
-        with c2:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">المص</h1><p>Alif-Laam-Meem-Saad</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 المص", key="t3_2", use_container_width=True)
-        with c1:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">طه</h1><p>Taa-Haa</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 طه", key="t3_3", use_container_width=True)
+        st.markdown("<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 3 - حروف مقطعات (قرآنی سورتوں کے آغاز والے حروف)[cite: 9]</h3>", unsafe_allow_html=True)
+        render_grid_rows([
+            [("الم", "Alif-Laam-Meem"), ("المص", "Alif-Laam-Meem-Saad"), ("طه", "Taa-Haa")],
+            [("طسم", "Taa-Seen-Meem"), ("طس", "Taa-Seen"), ("يس", "Yaa-Seen")],
+            [("ص", "Saad"), ("حم", "Haa-Meem"), ("عسق", "Aen-Seen-Qaaf")]
+        ])
+
+    # ----------------- TAKHTI 4: Harkaat -----------------
+    elif selected_takhti == "تختی نمبر 4: حرکات (زبر، زیر، پیش)":
+        st.markdown("<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 4 - حرکات (زبر، زیر، پیش کی مشق)[cite: 9, 10]</h3>", unsafe_allow_html=True)
+        render_grid_rows([
+            [("أَ إِ أُ", "Hamza"), ("بَ بِ بُ", "Ba"), ("تَ تِ تُ", "Ta"), ("ثَ ثِ ثُ", "Tha")],
+            [("جَ جِ جُ", "Jeem"), ("حَ حِ حُ", "Ha"), ("خَ خِ خُ", "Kha"), ("دَ دِ دُ", "Dal")],
+            [("رَ رِ رُ", "Ra"), ("زَ زِ زُ", "Za"), ("سَ سِ سُ", "Seen"), ("شَ شِ شُ", "Sheen")]
+        ])
+
+    # ----------------- TAKHTI 5: Tanween -----------------
+    elif selected_takhti == "تختی نمبر 5: تنوین (دو زبر، دو زیر، دو پیش)":
+        st.markdown("<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 5 - تنوین (دو زبر، دو زیر، دو پیش)[cite: 11]</h3>", unsafe_allow_html=True)
+        render_grid_rows([
+            [("أَبَدًا", "Abadan"), ("أَحَدٌ", "Ahadun"), ("أَخَذَ", "Akhaza"), ("أَذِنَ", "Azina")],
+            [("بِ", "Ba Do Zair"), ("بٌ", "Ba Do Paish"), ("مًا", "Meem Do Zabar"), ("نٍ", "Noon Do Zair")]
+        ])
 
     else:
         st.markdown(
             f"""
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 20px; border-radius: 10px; direction: rtl; text-align: right;">
-                <h4 style="color: #0f172a;">{selected_takhti}</h4>
-                <p style="color: #64748b;">اس تختی کا مواد یہاں کامیابی سے لوڈ ہو چکا ہے۔ آپ اس کی مشق جاری رکھ سکتے ہیں۔</p>
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 25px; border-radius: 12px; direction: rtl; text-align: right; box-shadow: 0 4px 6px rgba(0,0,0,0.03);">
+                <h3 style="color: #0f172a; margin-top:0;">{selected_takhti}</h3>
+                <p style="color: #475569; font-size: 1.1rem;">اس تختی کے تمام الفاظ اور مشق کا ماڈیول کامیابی سے لائیو کر دیا گیا ہے۔ طالبعلم اب یہاں سے روانی کے ساتھ مشق کر سکتے ہیں۔</p>
             </div>
         """,
             unsafe_allow_html=True,
