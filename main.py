@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR PERFECT QAIDA GRID LAYOUT ---
+# --- CUSTOM CSS FOR BOOK PAGE FRAME ---
 st.markdown("""
     <style>
     .main {
@@ -60,41 +60,6 @@ st.markdown("""
         font-weight: bold;
         font-size: 17px;
     }
-    /* CSS Grid for Book Page (5 items per row, centered last row) */
-    .qaida-grid-box {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        direction: rtl;
-        margin-bottom: 20px;
-    }
-    .qaida-card {
-        background-color: #ffffff;
-        border: 2px solid #2e7d32;
-        border-radius: 12px;
-        text-align: center;
-        padding: 12px 5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: 0.2s;
-    }
-    .qaida-card:hover {
-        background-color: #f1f8e9;
-        transform: scale(1.03);
-    }
-    .arabic-ltr {
-        font-size: 42px;
-        font-family: 'Amiri', serif;
-        font-weight: bold;
-        line-height: 1.2;
-    }
-    .ltr-name {
-        font-size: 13px;
-        color: #555;
-        font-weight: bold;
-        margin-top: 5px;
-    }
-    /* Make the last 4 items span across or center nicely */
-    .qaida-card:nth-last-child(4) { grid-column: 2; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -155,16 +120,38 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. CSS GRID RENDER (Proper Book Page Grid)
-st.markdown('<div class="qaida-grid-box">', unsafe_allow_html=True)
-for item in takhti_1_letters:
-    st.markdown(f'''
-        <div class="qaida-card">
-            <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-            <div class="ltr-name">{item['name']}</div>
-        </div>
-    ''', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+# 4. STREAMLIT NATIVE COLUMNS GRID (Guaranteed 5 items per row, RTL order, centered last row)
+cols_per_row = 5
+total_items = len(takhti_1_letters)
+
+for i in range(0, total_items, cols_per_row):
+    row_items = takhti_1_letters[i:i + cols_per_row]
+    cols = st.columns(cols_per_row)
+    
+    # If it's the last row with fewer items, pad with empty slots to center them
+    if len(row_items) < cols_per_row:
+        offset = (cols_per_row - len(row_items)) // 2
+        for idx, item in enumerate(row_items):
+            # RTL placement for last row
+            col_idx = cols_per_row - 1 - (offset + idx)
+            with cols[col_idx]:
+                st.markdown(f"""
+                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
+                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+    else:
+        # Full rows (5 items) in Right-to-Left order
+        for j in range(cols_per_row):
+            item = row_items[cols_per_row - 1 - j]
+            with cols[j]:
+                st.markdown(f"""
+                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
+                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
