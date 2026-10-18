@@ -1,23 +1,21 @@
 import time
 import streamlit as st
 
-# الصفحة الإعدادات (Page Configuration)
+# Page Configuration
 st.set_page_config(
     page_title="AI Maktab - اے آئی مکتب",
     page_icon="📖",
     layout="wide",
 )
 
-# Custom CSS for Islamic Theme, Background Pattern, and Word-by-Word Animation
+# Custom CSS for Clean Islamic Theme & Beautiful Background
 st.markdown(
     """
     <style>
-        /* Main Theme Colors & Islamic Geometric Background */
+        /* Clean Solid Islamic Deep Green Background */
         .stApp {
-            background-color: #051c13;
-            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #051c13 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
+            background-color: #0c2e21;
+            color: #ffffff;
         }
 
         /* Sidebar Styling */
@@ -26,28 +24,28 @@ st.markdown(
             color: white;
         }
 
-        /* Header Styling with Taawwudh and Bismillah */
+        /* Header Box with Gold Border */
         .header-box {
             text-align: center;
-            background: rgba(11, 60, 41, 0.9);
+            background: #113f2d;
             border: 2px solid #d4af37;
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
         .taawwudh-bismillah {
             font-family: 'Amiri', serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #d4af37;
             line-height: 1.8;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
         /* Word-by-Word Animation for Teacher Message */
         @keyframes fadeInWord {
-            0% { opacity: 0; transform: translateY(10px); }
+            0% { opacity: 0; transform: translateY(8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
@@ -60,13 +58,24 @@ st.markdown(
         }
 
         .teacher-message-box {
-            background: rgba(5, 28, 19, 0.95);
+            background: #082218;
             border: 1px solid #d4af37;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 18px;
             font-size: 1.4rem;
             text-align: right;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        /* Alphabet Cards Styling */
+        .alphabet-card {
+            background: #113f2d;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
     </style>
 """,
@@ -106,7 +115,6 @@ words = teacher_text.split()
 # Generating HTML for Word-by-Word Animation
 animated_html = '<div class="teacher-message-box">🎙️ استاد کا پیغام: '
 for i, word in enumerate(words):
-    # Adding a slight CSS animation delay for each word sequentially
     animated_html += f'<span class="animated-word" style="animation-delay: {i * 0.15}s;">{word}</span> '
 animated_html += "</div>"
 
@@ -119,59 +127,59 @@ col1, col2, col3, col4, col5 = st.columns(5)
 with col5:
     st.markdown(
         """
-        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
-            <h1 style="color: #d4af37;">ا</h1>
-            <p>Alif</p>
+        <div class="alphabet-card">
+            <h1 style="color: #d4af37; margin:0;">ا</h1>
+            <p style="margin:5px 0 0 0;">Alif</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
-    st.button("🔊 ا", key="btn_alif")
+    st.button("🔊 ا", key="btn_alif", use_container_width=True)
 
 with col4:
     st.markdown(
         """
-        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
-            <h1 style="color: #d4af37;">ب</h1>
-            <p>Ba</p>
+        <div class="alphabet-card">
+            <h1 style="color: #d4af37; margin:0;">ب</h1>
+            <p style="margin:5px 0 0 0;">Ba</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
-    st.button("🔊 ب", key="btn_ba")
+    st.button("🔊 ب", key="btn_ba", use_container_width=True)
 
 with col3:
     st.markdown(
         """
-        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
-            <h1 style="color: #d4af37;">ت</h1>
-            <p>Ta</p>
+        <div class="alphabet-card">
+            <h1 style="color: #d4af37; margin:0;">ت</h1>
+            <p style="margin:5px 0 0 0;">Ta</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
-    st.button("🔊 ت", key="btn_ta")
+    st.button("🔊 ت", key="btn_ta", use_container_width=True)
 
 with col2:
     st.markdown(
         """
-        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
-            <h1 style="color: #d4af37;">ث</h1>
-            <p>Tha</p>
+        <div class="alphabet-card">
+            <h1 style="color: #d4af37; margin:0;">ث</h1>
+            <p style="margin:5px 0 0 0;">Tha</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
-    st.button("🔊 ث", key="btn_tha")
+    st.button("🔊 ث", key="btn_tha", use_container_width=True)
 
 with col1:
     st.markdown(
         """
-        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
-            <h1 style="color: #d4af37;">ج</h1>
-            <p>Jeem</p>
+        <div class="alphabet-card">
+            <h1 style="color: #d4af37; margin:0;">ج</h1>
+            <p style="margin:5px 0 0 0;">Jeem</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
-    st.button("🔊 ج", key="btn_jeem")
+    st.button("🔊 ج", key="btn_jeem", use_container_width=True)
