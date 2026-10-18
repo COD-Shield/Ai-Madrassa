@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR PERFECT FLEXBOX GRID (RIGHT-TO-LEFT & CENTERED LAST ROW) ---
+# --- CUSTOM CSS FOR PERFECT QAIDA GRID LAYOUT ---
 st.markdown("""
     <style>
     .main {
@@ -20,7 +20,7 @@ st.markdown("""
         padding: 25px;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        max-width: 1000px;
+        max-width: 950px;
         margin: 0 auto;
         direction: rtl;
     }
@@ -60,12 +60,11 @@ st.markdown("""
         font-weight: bold;
         font-size: 17px;
     }
-    /* Flexbox Container for Perfect Centering of Last Row */
-    .qaida-flex-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+    /* CSS Grid for Book Page (5 items per row, centered last row) */
+    .qaida-grid-box {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
         direction: rtl;
         margin-bottom: 20px;
     }
@@ -74,8 +73,7 @@ st.markdown("""
         border: 2px solid #2e7d32;
         border-radius: 12px;
         text-align: center;
-        padding: 12px 0;
-        width: 17%;
+        padding: 12px 5px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         transition: 0.2s;
     }
@@ -84,7 +82,7 @@ st.markdown("""
         transform: scale(1.03);
     }
     .arabic-ltr {
-        font-size: 40px;
+        font-size: 42px;
         font-family: 'Amiri', serif;
         font-weight: bold;
         line-height: 1.2;
@@ -95,6 +93,8 @@ st.markdown("""
         font-weight: bold;
         margin-top: 5px;
     }
+    /* Make the last 4 items span across or center nicely */
+    .qaida-card:nth-last-child(4) { grid-column: 2; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -155,8 +155,8 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. FLEXBOX GRID RENDER (Automatically centers any partial last row)
-st.markdown('<div class="qaida-flex-grid">', unsafe_allow_html=True)
+# 4. CSS GRID RENDER (Proper Book Page Grid)
+st.markdown('<div class="qaida-grid-box">', unsafe_allow_html=True)
 for item in takhti_1_letters:
     st.markdown(f'''
         <div class="qaida-card">
