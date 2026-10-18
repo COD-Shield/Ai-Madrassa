@@ -1,310 +1,177 @@
-import streamlit as st
 import time
+import streamlit as st
 
-# --- PAGE CONFIGURATION ---
+# الصفحة الإعدادات (Page Configuration)
 st.set_page_config(
-    page_title="AI مکتب و مدرسہ - Make.com Style LMS",
+    page_title="AI Maktab - اے آئی مکتب",
     page_icon="📖",
-    layout="wide"
+    layout="wide",
 )
 
-# --- MAKE.COM STYLE CUSTOM CSS ---
-st.markdown("""
+# Custom CSS for Islamic Theme, Background Pattern, and Word-by-Word Animation
+st.markdown(
+    """
     <style>
-    .main {
-        background-color: #f4f5f7;
-        direction: rtl;
-    }
-    [data-testid="stSidebar"] {
-        background-color: #6d1b7b !important;
-        color: white !important;
-    }
-    [data-testid="stSidebar"] * {
-        color: white !important;
-    }
-    .make-header {
-        background-color: #ffffff;
-        padding: 15px 25px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 25px;
-        direction: rtl;
-    }
-    .workflow-card {
-        background-color: #ffffff;
-        border: 2px solid #e0e0e0;
-        border-radius: 16px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        transition: 0.3s;
-    }
-    .workflow-card:hover {
-        border-color: #6d1b7b;
-        box-shadow: 0 6px 20px rgba(109,27,123,0.15);
-    }
-    .qaida-book-container {
-        border: 6px double #6d1b7b;
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        max-width: 950px;
-        margin: 0 auto;
-        direction: rtl;
-    }
-    .qaida-header-banner {
-        background: linear-gradient(135deg, #6d1b7b, #4a1254);
-        color: white;
-        padding: 12px;
-        border-radius: 10px;
-        text-align: center;
-        font-size: 26px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-    .bismillah-banner {
-        font-size: 30px;
-        text-align: center;
-        color: #6d1b7b;
-        font-family: 'Amiri', serif;
-        font-weight: bold;
-        padding: 8px;
-        border-bottom: 2px solid #e1bee7;
-        border-top: 2px solid #e1bee7;
-        margin-bottom: 20px;
-    }
-    .hidayat-box {
-        background-color: #f3e5f5;
-        border: 2px solid #ba68c8;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 15px;
-        color: #333;
-        margin-bottom: 25px;
-        text-align: right;
-        line-height: 1.6;
-    }
-    .qaida-box {
-        background-color: #ffffff;
-        border: 2px solid #6d1b7b;
-        border-radius: 12px;
-        text-align: center;
-        padding: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        margin-bottom: 5px;
-        transition: all 0.3s ease-in-out;
-    }
-    .qaida-box:hover {
-        background-color: #f3e5f5;
-        border-color: #4a1254;
-        transform: translateY(-5px) scale(1.03);
-        box-shadow: 0 8px 20px rgba(109,27,123,0.25);
-    }
-    .arabic-letter {
-        font-size: 42px;
-        font-family: 'Amiri', serif;
-        font-weight: bold;
-    }
-    .letter-name {
-        font-size: 13px;
-        color: #555;
-        font-weight: bold;
-        margin-top: 5px;
-    }
+        /* Main Theme Colors & Islamic Geometric Background */
+        .stApp {
+            background-color: #051c13;
+            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #051c13 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        /* Sidebar Styling */
+        [data-testid="stSidebar"] {
+            background-color: #4A154B;
+            color: white;
+        }
+
+        /* Header Styling with Taawwudh and Bismillah */
+        .header-box {
+            text-align: center;
+            background: rgba(11, 60, 41, 0.9);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .taawwudh-bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: #d4af37;
+            line-height: 1.8;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Word-by-Word Animation for Teacher Message */
+        @keyframes fadeInWord {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-word {
+            display: inline-block;
+            animation: fadeInWord 0.4s ease forwards;
+            margin: 0 4px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .teacher-message-box {
+            background: rgba(5, 28, 19, 0.95);
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.4rem;
+            text-align: right;
+            margin-bottom: 20px;
+        }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
-# --- INITIALIZE SESSION STATE ---
-if "active_view" not in st.session_state:
-    st.session_state.active_view = "Scenarios"
-if "student_name" not in st.session_state:
-    st.session_state.student_name = "مُعاذ عزیز"
-if "current_ai_audio" not in st.session_state:
-    st.session_state.current_ai_audio = "براہ کرم اوپر دیے گئے حروف میں سے کسی پر کلک کریں یا آڈیو سنیں۔"
-
-# --- SIDEBAR ---
+# Sidebar Menu
 st.sidebar.markdown("<h2>⚡ AI Maktab</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("---")
+menu = st.sidebar.radio(
+    "", ["📁 Scenarios", "🤖 AI Agents", "📊 Credentials", "🌐 Webhooks"]
+)
 
-if st.sidebar.button("🗂️ Scenarios / کورسز", use_container_width=True):
-    st.session_state.active_view = "Scenarios"
-    st.rerun()
-
-if st.sidebar.button("🤖 AI Agents / اساتذہ", use_container_width=True):
-    st.session_state.active_view = "Agents"
-    st.rerun()
-
-if st.sidebar.button("📊 Credentials / پروگریس", use_container_width=True):
-    st.session_state.active_view = "Credentials"
-    st.rerun()
-
-if st.sidebar.button("🌐 Webhooks / ایڈمن", use_container_width=True):
-    st.session_state.active_view = "Admin"
-    st.rerun()
-
-# --- TOP HEADER BAR ---
-st.markdown("""
-    <div class="make-header">
-        <div style="font-weight: bold; font-size: 18px; color: #333;">🔗 Integration Module: Noorani Qaida & AI Speech Verification</div>
-        <div style="background-color: #e8f5e9; color: #2e7d32; padding: 5px 15px; border-radius: 20px; font-weight: bold;">🟢 Active Scenario</div>
-    </div>
-""", unsafe_allow_html=True)
-
-
-# ==========================================
-# 1. SCENARIOS VIEW
-# ==========================================
-if st.session_state.active_view == "Scenarios":
-    st.markdown("### 🧩 Learning Scenarios (워크ف로우 ماڈیولز)")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-            <div class="workflow-card">
-                <div style="font-size: 40px; margin-bottom: 10px;">📖</div>
-                <h3>نورانی قاعدہ (Takhti 1-3)</h3>
-                <p style="color: #666; font-size: 14px;">بنیادی حروفِ مفردات اور مرکبات کی لائیو مشق۔</p>
-            </div>
-        """, unsafe_allow_html=True)
-        if st.button("Open Module 🚀", use_container_width=True):
-            st.session_state.active_view = "QaidaViewer"
-            st.rerun()
-            
-    with col2:
-        st.markdown("""
-            <div class="workflow-card">
-                <div style="font-size: 40px; margin-bottom: 10px;">🎙️</div>
-                <h3>AI Speech Verification</h3>
-                <p style="color: #666; font-size: 14px;">اوپن اے آئی (OpenAI Whisper) کی طرز پر تلفظ کی جانچ۔</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-    with col3:
-        st.markdown("""
-            <div class="workflow-card">
-                <div style="font-size: 40px; margin-bottom: 10px;">📊</div>
-                <h3>Progress & Analytics</h3>
-                <p style="color: #666; font-size: 14px;">طالب علم کی روزانہ کی رپورٹس اور اسکور کارڈز۔</p>
-            </div>
-        """, unsafe_allow_html=True)
-
-
-# ==========================================
-# 2. QAIDA BOOK VIEWER
-# ==========================================
-elif st.session_state.active_view == "QaidaViewer":
-    if st.button("⬅️ Back to Scenarios"):
-        st.session_state.active_view = "Scenarios"
-        st.rerun()
-        
-    selected_takhti = st.selectbox(
-        "تختی منتخب کریں / Select Takhti:",
-        ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
-    )
-    
-    takhti_1_letters = [
-        {"ar": "ا", "name": "Alif", "color": "#e53935"},
-        {"ar": "ب", "name": "Ba", "color": "#000000"},
-        {"ar": "ت", "name": "Ta", "color": "#8e24aa"},
-        {"ar": "ث", "name": "Tha", "color": "#00897b"},
-        {"ar": "ج", "name": "Jeem", "color": "#1e88e5"},
-        {"ar": "ح", "name": "Ha", "color": "#d81b60"},
-        {"ar": "خ", "name": "Kha", "color": "#43a047"},
-        {"ar": "د", "name": "Dal", "color": "#e91e63"},
-        {"ar": "ذ", "name": "Zal", "color": "#fb8c00"},
-        {"ar": "ر", "name": "Ra", "color": "#43a047"},
-        {"ar": "ز", "name": "Za", "color": "#1e88e5"},
-        {"ar": "س", "name": "Seen", "color": "#d81b60"},
-        {"ar": "ش", "name": "Sheen", "color": "#000000"},
-        {"ar": "ص", "name": "Sad", "color": "#00897b"},
-        {"ar": "ض", "name": "Dad", "color": "#43a047"},
-        {"ar": "ط", "name": "Ta", "color": "#1e88e5"},
-        {"ar": "ظ", "name": "Za", "color": "#00897b"},
-        {"ar": "ع", "name": "Ain", "color": "#8e24aa"},
-        {"ar": "غ", "name": "Ghain", "color": "#e53935"},
-        {"ar": "ف", "name": "Fa", "color": "#d81b60"},
-        {"ar": "ق", "name": "Qaf", "color": "#1e88e5"},
-        {"ar": "ك", "name": "Kaf", "color": "#43a047"},
-        {"ar": "ل", "name": "Lam", "color": "#fb8c00"},
-        {"ar": "م", "name": "Meem", "color": "#8e24aa"},
-        {"ar": "ن", "name": "Noon", "color": "#00897b"},
-        {"ar": "و", "name": "Waw", "color": "#e53935"},
-        {"ar": "هـ", "name": "Ha", "color": "#d81b60"},
-        {"ar": "ء", "name": "Hamza", "color": "#1e88e5"},
-        {"ar": "ي", "name": "Ya", "color": "#000000"}
-    ]
-
-    st.markdown("""
-        <div class="qaida-book-container">
-            <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
-            <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-            <div class="hidayat-box">
-                <b>ہدایات:</b> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے <b>🔊 تلفظ سنیں</b> بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔
-            </div>
+# Header Section with Complete Taawwudh and Bismillah
+st.markdown(
+    """
+    <div class="header-box">
+        <div class="taawwudh-bismillah">
+            أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ<br>
+            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
         </div>
-    """, unsafe_allow_html=True)
-    
-    st.write("")
+    </div>
+""",
+    unsafe_allow_html=True,
+)
 
-    # Live Status Box for AI Ustad Pronunciation
-    st.info(f"🎙️ **AI استاد کا پیغام:** {st.session_state.current_ai_audio}")
+# Instructions Banner
+st.info(
+    "ہدایات: دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے تلفظ سنیں بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔"
+)
 
-    # Render Letters Grid (RTL) with Native Action Buttons
-    cols_per_row = 5
-    for i in range(0, len(takhti_1_letters), cols_per_row):
-        row_items = takhti_1_letters[i:i + cols_per_row]
-        cols = st.columns(cols_per_row)
-        reversed_cols = list(reversed(cols))
-        
-        for idx, item in enumerate(row_items):
-            with reversed_cols[idx]:
-                st.markdown(f"""
-                    <div class="qaida-box">
-                        <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
-                        <div class="letter-name">{item['name']}</div>
-                    </div>
-                """, unsafe_allow_html=True)
-                if st.button(f"🔊 {item['ar']}", key=f"audio_btn_{i}_{idx}", use_container_width=True):
-                    st.session_state.current_ai_audio = f"حرف **{item['ar']}** ({item['name']}) ادا کیا گیا۔ مخرج بالکل درست ہے!"
-                    st.rerun()
+# Dynamic Teacher Message with Word-by-Word Effect
+teacher_text = (
+    "مخرج بالکل درست ہے (Ba) استاد کا پیغام: حرف ب Al AI ادا کیا گیا ۔"
+)
+words = teacher_text.split()
 
-    st.divider()
-    
-    st.markdown(f"### 🎙️ {st.session_state.student_name} - تلاوت کی مشق اور ریکارڈنگ")
-    audio_val = st.audio_input("مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:")
+# Generating HTML for Word-by-Word Animation
+animated_html = '<div class="teacher-message-box">🎙️ استاد کا پیغام: '
+for i, word in enumerate(words):
+    # Adding a slight CSS animation delay for each word sequentially
+    animated_html += f'<span class="animated-word" style="animation-delay: {i * 0.15}s;">{word}</span> '
+animated_html += "</div>"
 
-    if audio_val is not None:
-        st.audio(audio_val)
-        with st.spinner("🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے..."):
-            time.sleep(2)
-            
-        st.markdown("""
-            <div style="padding: 15px; border-radius: 10px; background-color: #f3e5f5; border-left: 5px solid #6d1b7b; font-size: 16px; color: #4a1254; margin-top: 20px;">
-                <b>🌟 ماشاءاللہ بہت زبردست تلفظ ہے!</b><br>
-                • حروفِ مفردات کی ادائیگی بالکل درست رہی۔<br>
-                • <b>اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
-            </div>
-        """, unsafe_allow_html=True)
-        st.balloons()
+st.markdown(animated_html, unsafe_allow_html=True)
 
+# Arabic Alphabet Cards Layout (Right to Left / RTL alignment representation)
+st.write("### حروف تہجی کی مشق")
+col1, col2, col3, col4, col5 = st.columns(5)
 
-# ==========================================
-# 3. OTHER VIEWS
-# ==========================================
-elif st.session_state.active_view == "Agents":
-    st.markdown("### 🤖 AI Pronunciation Agents")
-    st.info("Configure AI models for real-time phoneme matching and speech recognition.")
+with col5:
+    st.markdown(
+        """
+        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
+            <h1 style="color: #d4af37;">ا</h1>
+            <p>Alif</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    st.button("🔊 ا", key="btn_alif")
 
-elif st.session_state.active_view == "Credentials":
-    st.markdown("### 📊 Student Credentials & Progress Logs")
-    st.metric(label="Total Scenarios Run", value="14")
-    st.metric(label="Average Accuracy", value="99.2%")
+with col4:
+    st.markdown(
+        """
+        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
+            <h1 style="color: #d4af37;">ب</h1>
+            <p>Ba</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    st.button("🔊 ب", key="btn_ba")
 
-elif st.session_state.active_view == "Admin":
-    st.markdown("### 🌐 Webhooks & Admin Panel")
-    st.info("Manage global system webhooks, API keys, and multi-tenant security settings.")
+with col3:
+    st.markdown(
+        """
+        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
+            <h1 style="color: #d4af37;">ت</h1>
+            <p>Ta</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    st.button("🔊 ت", key="btn_ta")
+
+with col2:
+    st.markdown(
+        """
+        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
+            <h1 style="color: #d4af37;">ث</h1>
+            <p>Tha</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    st.button("🔊 ث", key="btn_tha")
+
+with col1:
+    st.markdown(
+        """
+        <div style="border: 2px solid #d4af37; border-radius: 10px; padding: 20px; text-align: center; background: rgba(11,60,41,0.6);">
+            <h1 style="color: #d4af37;">ج</h1>
+            <p>Jeem</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    st.button("🔊 ج", key="btn_jeem")
