@@ -56,15 +56,7 @@ st.markdown("<h1 style='text-align: center; color: #2e7d32;'>📖 AI مکتب و
 st.markdown("<p style='text-align: center; color: #555; font-size: 18px;'>پیارے بچوں کے ساتھ خوشگوار انداز میں قرآن پاک سیکھنے کا ڈیجیٹل استاد</p>", unsafe_allow_html=True)
 st.divider()
 
-# --- SIDEBAR: LESSON SELECTOR ---
-st.sidebar.header("🎯 سبق کا انتخاب کریں")
-student_name = st.sidebar.text_input("طالب علم کا نام:", "مُعاذ عزیز")
-selected_surah = st.sidebar.selectbox(
-    "سورہ منتخب کریں:",
-    ["سورۃ الفاتحہ (Surah Al-Fatiha)", "سورۃ الإخلاص (Surah Al-Ikhlas)", "سورۃ الفلق (Surah Al-Falaq)", "سورۃ الناس (Surah An-Nas)"]
-)
-
-# --- SURAH DATABASE ---
+# --- SURAH DATABASE (DEFINED FIRST) ---
 surah_data = {
     "سورۃ الفاتحہ (Surah Al-Fatiha)": {
         "arabic": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
@@ -78,11 +70,21 @@ surah_data = {
         "arabic": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ",
         "translation": "آپ کہہ دیجیے کہ میں صبح کے رب کی پناہ میں آتا ہوں 👑 ہر اس چیز کے شر سے جو اس نے پیدا کی ہے۔"
     },
-    "سورۃ النّاس (Surah An-Nas)": {
+    "سورۃ الناس (Surah An-Nas)": {
         "arabic": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ",
         "translation": "آپ کہہ دیجیے کہ میں لوگوں کے رب کی پناہ مانگتا ہوں 👑 جو لوگوں کا حقیقی بادشاہ ہے۔"
     }
 }
+
+# --- SIDEBAR: LESSON SELECTOR ---
+st.sidebar.header("🎯 سبق کا انتخاب کریں")
+student_name = st.sidebar.text_input("طالب علم کا نام:", "مُعاذ عزیز")
+
+# Using keys directly from surah_data to prevent mismatch
+selected_surah = st.sidebar.selectbox(
+    "سورہ منتخب کریں:",
+    list(surah_data.keys())
+)
 
 current_lesson = surah_data[selected_surah]
 
