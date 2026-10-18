@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR EXACT BOOK-STYLE QAIDA GRID ---
+# --- CUSTOM CSS FOR HTML TABLE QAIDA PAGE ---
 st.markdown("""
     <style>
     .main {
@@ -60,28 +60,26 @@ st.markdown("""
         font-weight: bold;
         font-size: 17px;
     }
-    /* PERFECT BOOK GRID USING CSS FLEXBOX & WRAP */
-    .qaida-grid-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
+    /* HTML Table styling for Book Page Grid */
+    .qaida-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 12px;
         direction: rtl;
         margin-bottom: 20px;
     }
-    .qaida-cell {
+    .qaida-td {
         background-color: #ffffff;
         border: 2px solid #2e7d32;
         border-radius: 12px;
         text-align: center;
-        width: 18%; /* Exactly 5 items per row with gaps */
-        padding: 12px 0;
+        width: 20%;
+        padding: 12px 5px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: 0.2s;
+        vertical-align: middle;
     }
-    .qaida-cell:hover {
+    .qaida-td:hover {
         background-color: #f1f8e9;
-        transform: scale(1.03);
     }
     .arabic-ltr {
         font-size: 42px;
@@ -106,7 +104,7 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Direct Alif to Ya Order) ---
+# --- QAIDA DATA (Alif to Ya) ---
 takhti_1_letters = [
     {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
@@ -155,16 +153,46 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. FLEXBOX BOOK GRID RENDERING
-st.markdown('<div class="qaida-grid-wrapper">', unsafe_allow_html=True)
-for item in takhti_1_letters:
-    st.markdown(f'''
-        <div class="qaida-cell">
-            <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-            <div class="ltr-name">{item['name']}</div>
-        </div>
-    ''', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+# 4. HTML TABLE GENERATION (Guaranteed 5 columns per row, centered last row)
+table_html = '<table class="qaida-table">'
+cols_per_row = 5
+total_items = len(takhti_1_letters)
+
+for i in range(0, total_items, cols_per_row):
+    row_items = takhti_1_letters[i:i + cols_per_row]
+    table_html += '<tr>'
+    
+    # If it's the last row with fewer items (4 items), add an empty cell on the right to center them nicely
+    if len(row_items) < cols_per_row:
+        empty_slots = cols_per_row - len(row_items)
+        left_pad = empty_slots // 2
+        right_pad = empty_slots - left_pad
+        
+        # Add blank padding tds for centering
+        for _ in range(left_pad):
+            table_html += '<td style="border: none;"></td>'
+            
+        for item in row_items:
+            table_html += f'''
+                <td class="qaida-td">
+                    <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
+                    <div class="ltr-name">{item['name']}</div>
+                </td>
+            '''
+        for _ in range(right_pad):
+            table_html += '<td style="border: none;"></td>'
+    else:
+        for item in row_items:
+            table_html += f'''
+                <td class="qaida-td">
+                    <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
+                    <div class="ltr-name">{item['name']}</div>
+                </td>
+            '''
+    table_html += '</tr>'
+
+table_html += '</table>'
+st.markdown(table_html, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
