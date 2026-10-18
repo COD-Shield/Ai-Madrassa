@@ -97,7 +97,6 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         margin-bottom: 10px;
         transition: all 0.3s ease-in-out;
-        cursor: pointer;
     }
     .qaida-box:hover {
         background-color: #f3e5f5;
@@ -117,19 +116,6 @@ st.markdown("""
         margin-top: 5px;
     }
     </style>
-
-    <script>
-    // Reliable Click-to-Speech Web API for Arabic Pronunciation
-    function playAudio(text) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.75;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-    </script>
 """, unsafe_allow_html=True)
 
 # --- INITIALIZE SESSION STATE ---
@@ -137,6 +123,8 @@ if "active_view" not in st.session_state:
     st.session_state.active_view = "Scenarios"
 if "student_name" not in st.session_state:
     st.session_state.student_name = "مُعاذ عزیز"
+if "selected_audio_letter" not in st.session_state:
+    st.session_state.selected_audio_letter = "ا (Alif)"
 
 # --- SIDEBAR ---
 st.sidebar.markdown("<h2>⚡ AI Maktab</h2>", unsafe_allow_html=True)
@@ -207,7 +195,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (RTL with Click-to-Speech Audio)
+# 2. QAIDA BOOK VIEWER
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -256,13 +244,14 @@ elif st.session_state.active_view == "QaidaViewer":
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> کسی بھی حرف پر <b>کلک (Click)</b> کریں؛ AI استاد فوراً اس حرف کا درست تلفظ بول کر سنائے گا۔
+                <b>ہدایات:</b> کسی بھی حرف پر کلک کریں یا نیچے دیے گئے سلیکٹر سے حرف منتخب کریں تاکہ AI استاد اس کا تلفظ سنائے۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.write("")
 
+    # Interactive Letter Grid with Native Action Buttons
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
@@ -272,11 +261,14 @@ elif st.session_state.active_view == "QaidaViewer":
         for idx, item in enumerate(row_items):
             with reversed_cols[idx]:
                 st.markdown(f"""
-                    <div class="qaida-box" onclick="playAudio('{item['ar']}')">
+                    <div class="qaida-box">
                         <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
                         <div class="letter-name">{item['name']}</div>
                     </div>
                 """, unsafe_allow_html=True)
+                if st.button(f"🔊 {item['ar']}", key=f"btn_{item['name']}_{i}_{idx}", use_container_width=True):
+                    st.session_state.selected_audio_letter = f"{item['ar']} ({item['name']})"
+                    st.toast(f"🤖 AI استاد: {item['ar']} کا تلفظ بالکل درست ہے!", icon="🌟")
 
     st.divider()
     
