@@ -63,7 +63,6 @@ st.markdown("""
         font-size: 26px;
         font-weight: bold;
         margin-bottom: 15px;
-        font-family: sans-serif;
     }
     .bismillah-banner {
         font-size: 30px;
@@ -87,29 +86,21 @@ st.markdown("""
         text-align: right;
         line-height: 1.6;
     }
-    .qaida-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 12px;
-        direction: rtl;
-        margin-bottom: 10px;
-    }
-    .qaida-td {
+    .qaida-box {
         background-color: #ffffff;
         border: 2px solid #6d1b7b;
         border-radius: 12px;
         text-align: center;
-        width: 20%;
-        padding: 15px 5px;
+        padding: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        vertical-align: middle;
+        margin-bottom: 10px;
     }
-    .arabic-ltr {
+    .arabic-letter {
         font-size: 42px;
         font-family: 'Amiri', serif;
         font-weight: bold;
     }
-    .ltr-name {
+    .letter-name {
         font-size: 13px;
         color: #555;
         font-weight: bold;
@@ -154,7 +145,7 @@ st.markdown("""
 
 
 # ==========================================
-# 1. SCENARIOS VIEW (Main Dashboard Workflow)
+# 1. SCENARIOS VIEW
 # ==========================================
 if st.session_state.active_view == "Scenarios":
     st.markdown("### 🧩 Learning Scenarios (워크ف로우 ماڈیولز)")
@@ -193,7 +184,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (Fixed HTML Table Rendering)
+# 2. QAIDA BOOK VIEWER (Using Streamlit Columns)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -237,55 +228,34 @@ elif st.session_state.active_view == "QaidaViewer":
         {"ar": "ي", "name": "Ya", "color": "#000000"}
     ]
 
-    html_code = """
-    <div class="qaida-book-container">
-        <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
-        <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <div class="hidayat-box">
-            <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ سطر کے آخر سے دائیں اور اوپر سے نیچے کی طرف مشق کریں۔
+    # Container Box mimicking Book
+    st.markdown("""
+        <div class="qaida-book-container">
+            <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
+            <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="hidayat-box">
+                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ سطر کے آخر سے دائیں اور اوپر سے نیچے کی طرف مشق کریں۔
+            </div>
         </div>
-        <table class="qaida-table">
-    """
+    """, unsafe_allow_html=True)
+    
+    st.write("") # spacing
 
+    # Render Letters in Grid using Streamlit Columns (5 per row)
     cols_per_row = 5
-    total_items = len(takhti_1_letters)
-
-    for i in range(0, total_items, cols_per_row):
+    for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
-        html_code += "<tr>"
+        cols = st.columns(cols_per_row)
         
-        if len(row_items) < cols_per_row:
-            empty_slots = cols_per_row - len(row_items)
-            left_pad = empty_slots // 2
-            right_pad = empty_slots - left_pad
-            
-            for _ in range(left_pad):
-                html_code += '<td style="border: none;"></td>'
-                
-            for item in row_items:
-                html_code += f"""
-                    <td class="qaida-td">
-                        <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-                        <div class="ltr-name">{item['name']}</div>
-                    </td>
-                """
-            for _ in range(right_pad):
-                html_code += '<td style="border: none;"></td>'
-        else:
-            for item in row_items:
-                html_code += f"""
-                    <td class="qaida-td">
-                        <div class="arabic-ltr" style="color: {item['color']};">{item['ar']}</div>
-                        <div class="ltr-name">{item['name']}</div>
-                    </td>
-                """
-        html_code += "</tr>"
+        for idx, item in enumerate(row_items):
+            with cols[idx]:
+                st.markdown(f"""
+                    <div class="qaida-box">
+                        <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
+                        <div class="letter-name">{item['name']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
 
-    html_code += "</table></div>"
-    
-    # Render table properly using st.markdown with unsafe_allow_html=True
-    st.markdown(html_code, unsafe_allow_html=True)
-    
     st.divider()
     
     st.markdown(f"### 🎙️ {st.session_state.student_name} - تلاوت کی مشق اور ریکارڈنگ")
