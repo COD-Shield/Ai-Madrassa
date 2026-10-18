@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR RTL (RIGHT-TO-LEFT) QAIDA PAGE ---
+# --- CUSTOM CSS FOR RTL & CENTERING LAST ROW ---
 st.markdown("""
     <style>
     .main {
@@ -71,7 +71,7 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Complete Takhti 1 - All Arabic Alphabets from Alif to Ya) ---
+# --- QAIDA DATA (Complete Takhti 1) ---
 takhti_1_letters = [
     {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
@@ -120,21 +120,47 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. RTL GRID COLUMNS (Complete Alphabets Grid - Right to Left)
+# 4. RTL GRID COLUMNS (Center Aligned Last Row Logic)
 cols_per_row = 5
-for i in range(0, len(takhti_1_letters), cols_per_row):
-    cols = st.columns(cols_per_row)
-    for j in range(cols_per_row - 1, -1, -1):
-        idx = i + (cols_per_row - 1 - j)
-        if idx < len(takhti_1_letters):
-            item = takhti_1_letters[idx]
-            with cols[j]:
-                st.markdown(f"""
-                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
-                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
-                    </div>
-                """, unsafe_allow_html=True)
+total_items = len(takhti_1_letters)
+
+for i in range(0, total_items, cols_per_row):
+    remaining = total_items - i
+    current_row_size = min(cols_per_row, remaining)
+    
+    # If it's the last row and has fewer items, center it using Streamlit empty spacer columns
+    if current_row_size < cols_per_row:
+        empty_space = (cols_per_row - current_row_size) / 2
+        cols = st.columns(cols_per_row)
+        
+        # Mapping items into the center of the row
+        start_idx = int(empty_space)
+        for j in range(current_row_size):
+            idx = i + (current_row_size - 1 - j)  # RTL order for last row
+            col_idx = start_idx + j
+            if idx < total_items:
+                item = takhti_1_letters[idx]
+                with cols[col_idx]:
+                    st.markdown(f"""
+                        <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
+                            <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+    else:
+        # Full rows (5 items)
+        cols = st.columns(cols_per_row)
+        for j in range(cols_per_row - 1, -1, -1):
+            idx = i + (cols_per_row - 1 - j)
+            if idx < total_items:
+                item = takhti_1_letters[idx]
+                with cols[j]:
+                    st.markdown(f"""
+                        <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
+                            <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
