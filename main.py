@@ -95,7 +95,7 @@ st.markdown("""
         text-align: center;
         padding: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         transition: all 0.3s ease-in-out;
     }
     .qaida-box:hover {
@@ -123,8 +123,8 @@ if "active_view" not in st.session_state:
     st.session_state.active_view = "Scenarios"
 if "student_name" not in st.session_state:
     st.session_state.student_name = "مُعاذ عزیز"
-if "selected_audio_letter" not in st.session_state:
-    st.session_state.selected_audio_letter = "ا (Alif)"
+if "current_ai_audio" not in st.session_state:
+    st.session_state.current_ai_audio = "براہ کرم اوپر دیے گئے حروف میں سے کسی پر کلک کریں یا آڈیو سنیں۔"
 
 # --- SIDEBAR ---
 st.sidebar.markdown("<h2>⚡ AI Maktab</h2>", unsafe_allow_html=True)
@@ -244,14 +244,17 @@ elif st.session_state.active_view == "QaidaViewer":
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> کسی بھی حرف پر کلک کریں یا نیچے دیے گئے سلیکٹر سے حرف منتخب کریں تاکہ AI استاد اس کا تلفظ سنائے۔
+                <b>ہدایات:</b> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے <b>🔊 تلفظ سنیں</b> بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.write("")
 
-    # Interactive Letter Grid with Native Action Buttons
+    # Live Status Box for AI Ustad Pronunciation
+    st.info(f"🎙️ **AI استاد کا پیغام:** {st.session_state.current_ai_audio}")
+
+    # Render Letters Grid (RTL) with Native Action Buttons
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
@@ -266,9 +269,9 @@ elif st.session_state.active_view == "QaidaViewer":
                         <div class="letter-name">{item['name']}</div>
                     </div>
                 """, unsafe_allow_html=True)
-                if st.button(f"🔊 {item['ar']}", key=f"btn_{item['name']}_{i}_{idx}", use_container_width=True):
-                    st.session_state.selected_audio_letter = f"{item['ar']} ({item['name']})"
-                    st.toast(f"🤖 AI استاد: {item['ar']} کا تلفظ بالکل درست ہے!", icon="🌟")
+                if st.button(f"🔊 {item['ar']}", key=f"audio_btn_{i}_{idx}", use_container_width=True):
+                    st.session_state.current_ai_audio = f"حرف **{item['ar']}** ({item['name']}) ادا کیا گیا۔ مخرج بالکل درست ہے!"
+                    st.rerun()
 
     st.divider()
     
