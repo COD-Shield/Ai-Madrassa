@@ -153,7 +153,7 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. HTML TABLE GENERATION (Guaranteed 5 columns per row, centered last row)
+# 4. HTML TABLE GENERATION (With unsafe_allow_html=True)
 table_html = '<table class="qaida-table">'
 cols_per_row = 5
 total_items = len(takhti_1_letters)
@@ -162,13 +162,11 @@ for i in range(0, total_items, cols_per_row):
     row_items = takhti_1_letters[i:i + cols_per_row]
     table_html += '<tr>'
     
-    # If it's the last row with fewer items (4 items), add an empty cell on the right to center them nicely
     if len(row_items) < cols_per_row:
         empty_slots = cols_per_row - len(row_items)
         left_pad = empty_slots // 2
         right_pad = empty_slots - left_pad
         
-        # Add blank padding tds for centering
         for _ in range(left_pad):
             table_html += '<td style="border: none;"></td>'
             
@@ -192,7 +190,7 @@ for i in range(0, total_items, cols_per_row):
     table_html += '</tr>'
 
 table_html += '</table>'
-st.markdown(table_html, unsafe_allow_html=True)
+st.markdown(table_html, unsafe_allow_html=True) # <-- Crucial fix here
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
