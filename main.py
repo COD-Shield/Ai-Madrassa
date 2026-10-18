@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- MAKE.COM STYLE CUSTOM CSS WITH AUDIO SPEECH ON HOVER ---
+# --- MAKE.COM STYLE CUSTOM CSS ---
 st.markdown("""
     <style>
     .main {
@@ -88,7 +88,6 @@ st.markdown("""
         text-align: right;
         line-height: 1.6;
     }
-    /* QAIDA BOX WITH AUDIO TRIGGER ON HOVER */
     .qaida-box {
         background-color: #ffffff;
         border: 2px solid #6d1b7b;
@@ -120,13 +119,13 @@ st.markdown("""
     </style>
 
     <script>
-    // JavaScript Text-to-Speech for AI Ustad Pronunciation
+    // Reliable Click-to-Speech Web API for Arabic Pronunciation
     function playAudio(text) {
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // Stop previous audio
+            window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ar-SA'; // Arabic Language Accent
-            utterance.rate = 0.8;     // Slower speed for clear learning
+            utterance.lang = 'ar-SA';
+            utterance.rate = 0.75;
             window.speechSynthesis.speak(utterance);
         }
     }
@@ -139,7 +138,7 @@ if "active_view" not in st.session_state:
 if "student_name" not in st.session_state:
     st.session_state.student_name = "مُعاذ عزیز"
 
-# --- SIDEBAR (Make.com Purple Menu Style) ---
+# --- SIDEBAR ---
 st.sidebar.markdown("<h2>⚡ AI Maktab</h2>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
@@ -208,7 +207,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (RTL with AI Audio Hover Pronunciation)
+# 2. QAIDA BOOK VIEWER (RTL with Click-to-Speech Audio)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -252,20 +251,18 @@ elif st.session_state.active_view == "QaidaViewer":
         {"ar": "ي", "name": "Ya", "color": "#000000"}
     ]
 
-    # Container Box mimicking Book
     st.markdown("""
         <div class="qaida-book-container">
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> کسی بھی حرف پر کرسر (Cursor) لے جائیں؛ AI استاد فوراً اس حرف کا درست تلفظ بول کر سنائے گا۔
+                <b>ہدایات:</b> کسی بھی حرف پر <b>کلک (Click)</b> کریں؛ AI استاد فوراً اس حرف کا درست تلفظ بول کر سنائے گا۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.write("")
 
-    # Render Letters in Grid with Audio Pronunciation on Hover
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
@@ -275,7 +272,7 @@ elif st.session_state.active_view == "QaidaViewer":
         for idx, item in enumerate(row_items):
             with reversed_cols[idx]:
                 st.markdown(f"""
-                    <div class="qaida-box" onmouseover="playAudio('{item['ar']}')">
+                    <div class="qaida-box" onclick="playAudio('{item['ar']}')">
                         <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
                         <div class="letter-name">{item['name']}</div>
                     </div>
