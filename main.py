@@ -76,7 +76,7 @@ st.markdown(
             background: #ffffff;
             border: 2px solid #cbd5e1;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.03);
             margin-bottom: 10px;
@@ -178,7 +178,7 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
     st.markdown(
         """
         <div style="background: #ffffff; border-right: 6px solid #047857; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); direction: rtl; text-align: right;">
-            <strong>ہدایات:</strong> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے تلفظ بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے۔
+            <strong>ہدایات:</strong> دائیں طرف سے پڑھنا شروع کریں۔ کسی بھی حرف کے نیچے دیے گئے تلفظ بٹن پر کلک کریں تاکہ AI استاد آپ کو درست تلفظ بتائے[cite: 5].
         </div>
     """,
         unsafe_allow_html=True,
@@ -209,72 +209,67 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ----------------- TAKHTI 1: Huroof-e-Mufradat -----------------
+    # ----------------- TAKHTI 1: Huroof-e-Mufradat (Complete A-Y) -----------------
     if selected_takhti == "تختی نمبر 1: حروف مفردات (ا، ب، ت...)":
         st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 1 - حروف مفردات[cite: 5]</h3>",
+            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 1 - حروف مفردات</h3>",
             unsafe_allow_html=True,
         )
-        c1, c2, c3, c4, c5 = st.columns(5)
-        with c5:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">ا</h1><p>Alif</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ا", key="t1_1", use_container_width=True)
-        with c4:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">ب</h1><p>Ba</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ب", key="t1_2", use_container_width=True)
-        with c3:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">ت</h1><p>Ta</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ت", key="t1_3", use_container_width=True)
-        with c2:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">ث</h1><p>Tha</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ث", key="t1_4", use_container_width=True)
-        with c1:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">ج</h1><p>Jeem</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ج", key="t1_5", use_container_width=True)
+
+        # Helper function to render a row of letters (Right to Left)
+        def render_letters_row(letters_data):
+            cols = st.columns(len(letters_data))
+            for idx, (char, name) in enumerate(reversed(letters_data)):
+                with cols[idx]:
+                    st.markdown(
+                        f'<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">{char}</h1><p style="font-size:0.85rem; margin:2px 0;">{name}</p></div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.button(f"🔊 {char}", key=f"t1_{char}", use_container_width=True)
+
+        # Complete Huroof-e-Mufradat rows from PDF (Takhti 1)[cite: 5]
+        row1 = [("ا", "Alif"), ("ب", "Ba"), ("ت", "Ta"), ("ث", "Tha"), ("ج", "Jeem")]
+        row2 = [("ح", "Ha"), ("خ", "Kha"), ("د", "Dal"), ("ذ", "Zal"), ("ر", "Ra")]
+        row3 = [("ز", "Za"), ("س", "Seen"), ("ش", "Sheen"), ("ص", "Sad"), ("ض", "Dad")]
+        row4 = [("ط", "Ta"), ("ظ", "Za"), ("ع", "Aen"), ("غ", "Ghaen"), ("ف", "Fa")]
+        row5 = [("ق", "Qaf"), ("ك", "Kaf"), ("ل", "Lam"), ("م", "Meem"), ("ن", "Noon")]
+        row6 = [("و", "Wao"), ("ه", "Ha"), ("ء", "Hamza"), ("ي", "Ya"), ("ى", "Ya")]
+
+        render_letters_row(row1)
+        render_letters_row(row2)
+        render_letters_row(row3)
+        render_letters_row(row4)
+        render_letters_row(row5)
+        render_letters_row(row6)
 
     # ----------------- TAKHTI 2: Huroof-e-Murakkabat -----------------
     elif selected_takhti == "تختی نمبر 2: حروف مرکبات (ملے ہوئے حروف)":
         st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 2 - حروف مرکبات (ملے ہوئے حروف)[cite: 6]</h3>",
+            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 2 - حروف مرکبات (ملے ہوئے حروف)</h3>",
             unsafe_allow_html=True,
         )
         c1, c2, c3, c4 = st.columns(4)
         with c4:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">لا</h1><p>Lam-Alif</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">لا</h1><p>Lam-Alif</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 لا", key="t2_1", use_container_width=True)
         with c3:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">لا</h1><p>La</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">لا</h1><p>La</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 لا2", key="t2_2", use_container_width=True)
         with c2:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">بكت</h1><p>Ba-Ka-Ta</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">بكت</h1><p>Ba-Ka-Ta</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 بکت", key="t2_3", use_container_width=True)
         with c1:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">تلث</h1><p>Ta-La-Tha</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">تلث</h1><p>Ta-La-Tha</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 تلث", key="t2_4", use_container_width=True)
@@ -282,87 +277,35 @@ elif navigation == "📖 طالبعلم پورٹل (Noorani Qaida)":
     # ----------------- TAKHTI 3: Huroof-e-Muqatta'at -----------------
     elif selected_takhti == "تختی نمبر 3: حروف مقطعات":
         st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 3 - حروف مقطعات[cite: 9]</h3>",
+            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 3 - حروف مقطعات</h3>",
             unsafe_allow_html=True,
         )
         c1, c2, c3 = st.columns(3)
         with c3:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">الم</h1><p>Alif-Laam-Meem</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">الم</h1><p>Alif-Laam-Meem</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 الم", key="t3_1", use_container_width=True)
         with c2:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">المص</h1><p>Alif-Laam-Meem-Saad</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">المص</h1><p>Alif-Laam-Meem-Saad</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 المص", key="t3_2", use_container_width=True)
         with c1:
             st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">طه</h1><p>Taa-Haa</p></div>',
+                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.2rem; margin:0;">طه</h1><p>Taa-Haa</p></div>',
                 unsafe_allow_html=True,
             )
             st.button("🔊 طه", key="t3_3", use_container_width=True)
-
-    # ----------------- TAKHTI 4: Harkaat -----------------
-    elif selected_takhti == "تختی نمبر 4: حرکات (زبر، زیر، پیش)":
-        st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 4 - حرکات (زبر، زیر، پیش)[cite: 9, 10]</h3>",
-            unsafe_allow_html=True,
-        )
-        c1, c2, c3 = st.columns(3)
-        with c3:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">أَ إِ أُ</h1><p>Hamza Zabar, Zair, Paish</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 أءأ", key="t4_1", use_container_width=True)
-        with c2:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">بَ بِ بُ</h1><p>Ba Zabar, Zair, Paish</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 ببب", key="t4_2", use_container_width=True)
-        with c1:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">تَ تِ تُ</h1><p>Ta Zabar, Zair, Paish</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 تتت", key="t4_3", use_container_width=True)
-
-    # ----------------- TAKHTI 5: Tanween -----------------
-    elif selected_takhti == "تختی نمبر 5: تنوین (دو زبر، دو زیر، دو پیش)":
-        st.markdown(
-            "<h3 style='color: #0f172a; direction: rtl; text-align: right;'>تختی نمبر 5 - تنوین[cite: 11]</h3>",
-            unsafe_allow_html=True,
-        )
-        c1, c2, c3 = st.columns(3)
-        with c3:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">أَبَدًا</h1><p>Abadan (Do Zabar)</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 أبداً", key="t5_1", use_container_width=True)
-        with c2:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">بٍ</h1><p>Ba Do Zair</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 بٍ", key="t5_2", use_container_width=True)
-        with c1:
-            st.markdown(
-                '<div class="qaida-card"><h1 style="color:#047857; font-family:Amiri; font-size:2.5rem; margin:0;">بٌ</h1><p>Ba Do Paish</p></div>',
-                unsafe_allow_html=True,
-            )
-            st.button("🔊 بٌ", key="t5_3", use_container_width=True)
 
     else:
         st.markdown(
             f"""
             <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 20px; border-radius: 10px; direction: rtl; text-align: right;">
                 <h4 style="color: #0f172a;">{selected_takhti}</h4>
-                <p style="color: #64748b;">اس تختی کا ڈیجیٹل ڈسپلے کامیابی سے جڑ چکا ہے۔ آپ اس تختی کی مشق یہاں جاری رکھ سکتے ہیں۔</p>
+                <p style="color: #64748b;">اس تختی کا مواد یہاں کامیابی سے لوڈ ہو چکا ہے۔ آپ اس کی مشق جاری رکھ سکتے ہیں۔</p>
             </div>
         """,
             unsafe_allow_html=True,
