@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- MAKE.COM STYLE CUSTOM CSS WITH HOVER EFFECT ---
+# --- MAKE.COM STYLE CUSTOM CSS WITH AUDIO SPEECH ON HOVER ---
 st.markdown("""
     <style>
     .main {
@@ -88,7 +88,7 @@ st.markdown("""
         text-align: right;
         line-height: 1.6;
     }
-    /* QAIDA BOX WITH HOVER EFFECT */
+    /* QAIDA BOX WITH AUDIO TRIGGER ON HOVER */
     .qaida-box {
         background-color: #ffffff;
         border: 2px solid #6d1b7b;
@@ -98,13 +98,13 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         margin-bottom: 10px;
         transition: all 0.3s ease-in-out;
+        cursor: pointer;
     }
     .qaida-box:hover {
         background-color: #f3e5f5;
         border-color: #4a1254;
         transform: translateY(-5px) scale(1.03);
         box-shadow: 0 8px 20px rgba(109,27,123,0.25);
-        cursor: pointer;
     }
     .arabic-letter {
         font-size: 42px;
@@ -118,6 +118,19 @@ st.markdown("""
         margin-top: 5px;
     }
     </style>
+
+    <script>
+    // JavaScript Text-to-Speech for AI Ustad Pronunciation
+    function playAudio(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Stop previous audio
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-SA'; // Arabic Language Accent
+            utterance.rate = 0.8;     // Slower speed for clear learning
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    </script>
 """, unsafe_allow_html=True)
 
 # --- INITIALIZE SESSION STATE ---
@@ -195,7 +208,7 @@ if st.session_state.active_view == "Scenarios":
 
 
 # ==========================================
-# 2. QAIDA BOOK VIEWER (RTL with Letter Hover Effect)
+# 2. QAIDA BOOK VIEWER (RTL with AI Audio Hover Pronunciation)
 # ==========================================
 elif st.session_state.active_view == "QaidaViewer":
     if st.button("⬅️ Back to Scenarios"):
@@ -245,14 +258,14 @@ elif st.session_state.active_view == "QaidaViewer":
             <div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>
             <div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="hidayat-box">
-                <b>ہدایات:</b> یہ حروفِ مفردات بنیاد ہیں۔ ان میں تلفظ درست کروائیں۔ کسی بھی حرف پر کرسر لے جانے پر وہ نمایاں (Highlight) ہو جائے گا۔
+                <b>ہدایات:</b> کسی بھی حرف پر کرسر (Cursor) لے جائیں؛ AI استاد فوراً اس حرف کا درست تلفظ بول کر سنائے گا۔
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.write("")
 
-    # Render Letters in Grid with Hover Effect
+    # Render Letters in Grid with Audio Pronunciation on Hover
     cols_per_row = 5
     for i in range(0, len(takhti_1_letters), cols_per_row):
         row_items = takhti_1_letters[i:i + cols_per_row]
@@ -262,7 +275,7 @@ elif st.session_state.active_view == "QaidaViewer":
         for idx, item in enumerate(row_items):
             with reversed_cols[idx]:
                 st.markdown(f"""
-                    <div class="qaida-box">
+                    <div class="qaida-box" onmouseover="playAudio('{item['ar']}')">
                         <div class="arabic-letter" style="color: {item['color']};">{item['ar']}</div>
                         <div class="letter-name">{item['name']}</div>
                     </div>
