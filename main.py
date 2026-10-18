@@ -3,25 +3,25 @@ import time
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="AI Maktab o Madrassa - Digital Noorani Qaida",
+    page_title="AI مکتب و مدرسہ - نورانی قاعدہ",
     page_icon="📖",
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR EXACT QAIDA BOOK PAGE LOOK ---
+# --- CUSTOM CSS FOR PROPER GRID COLUMNS & BOOK PAGE ---
 st.markdown("""
     <style>
     .main {
-        background-color: #eef2e6;
+        background-color: #f4f6f0;
     }
     /* Outer Book Page Container */
     .qaida-book-container {
-        border: 8px double #1b5e20;
+        border: 6px double #1b5e20;
         background-color: #ffffff;
         padding: 25px;
         border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        max-width: 950px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 1000px;
         margin: 0 auto;
     }
     /* Top Header Banner */
@@ -31,73 +31,38 @@ st.markdown("""
         padding: 12px;
         border-radius: 10px;
         text-align: center;
-        font-size: 28px;
+        font-size: 26px;
         font-weight: bold;
         margin-bottom: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     /* Bismillah Banner */
     .bismillah-banner {
-        font-size: 32px;
+        font-size: 30px;
         text-align: center;
         color: #1b5e20;
         font-family: 'Amiri', 'Traditional Arabic', serif;
         font-weight: bold;
-        padding: 10px;
+        padding: 8px;
         border-bottom: 2px solid #c8e6c9;
         border-top: 2px solid #c8e6c9;
         margin-bottom: 20px;
     }
-    /* Hidayat / Instructions Box (Yellowish like real book) */
+    /* Hidayat Box */
     .hidayat-box {
         background-color: #fffde7;
         border: 2px solid #fbc02d;
         padding: 15px;
         border-radius: 10px;
-        font-size: 16px;
+        font-size: 15px;
         color: #333;
         margin-bottom: 25px;
         direction: rtl;
         text-align: right;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
     .hidayat-title {
         color: #e65100;
         font-weight: bold;
-        font-size: 18px;
-    }
-    /* Qaida Grid Table */
-    .qaida-grid-table {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        direction: rtl;
-        margin-bottom: 30px;
-    }
-    .qaida-grid-cell {
-        background-color: #ffffff;
-        border: 2px solid #2e7d32;
-        border-radius: 12px;
-        text-align: center;
-        padding: 15px 5px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-        transition: 0.2s;
-    }
-    .qaida-grid-cell:hover {
-        background-color: #f1f8e9;
-        transform: scale(1.05);
-    }
-    .qaida-arabic-letter {
-        font-size: 45px;
-        font-family: 'Amiri', 'Traditional Arabic', serif;
-        font-weight: bold;
-        line-height: 1.2;
-    }
-    .qaida-eng-label {
-        font-size: 14px;
-        color: #555;
-        font-weight: bold;
-        margin-top: 5px;
+        font-size: 17px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -110,7 +75,7 @@ selected_takhti = st.sidebar.selectbox(
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA (Takhti 1 with colors and English pronunciation labels as shown in image) ---
+# --- QAIDA DATA ---
 takhti_1_letters = [
     {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
@@ -134,59 +99,56 @@ takhti_1_letters = [
     {"ar": "ف", "name": "Fa", "color": "#d81b60"}
 ]
 
-# --- MAIN PAGE: BOOK PAGE VIEW ---
+# --- MAIN PAGE CONTAINER ---
 st.markdown('<div class="qaida-book-container">', unsafe_allow_html=True)
 
-# 1. Takhti Header Banner
-st.markdown('''
-    <div class="qaida-header-banner">
-        تختی نمبر 1 ـــ حروفِ مفردات
-    </div>
-''', unsafe_allow_html=True)
+# 1. Header Banner
+st.markdown('<div class="qaida-header-banner">تختی نمبر 1 ـــ حروفِ مفردات</div>', unsafe_allow_html=True)
 
 # 2. Bismillah
-st.markdown('''
-    <div class="bismillah-banner">
-        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-    </div>
-''', unsafe_allow_html=True)
+st.markdown('<div class="bismillah-banner">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>', unsafe_allow_html=True)
 
-# 3. Hidayat Box (Instructions exactly matching image)
+# 3. Hidayat Box
 st.markdown('''
     <div class="hidayat-box">
-        <span class="hidayat-title">ہدایات:</span> یہ حروفِ مفردات بنیاد ہیں۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ یا دکروائیں سطر کے آخر سے دائیں اور اوپر سے نیچے اور نیچے سے اوپر کی طرف پڑھوائیں. اگر اس تختی میں کمی رہی تو یاد رکھیے اس کا اثر بہت آگے تک جائے گا اور کمزور بنیاد پر اچھی عمارت ممکن نہیں[cite: 4].
+        <span class="hidayat-title">ہدایات:</span> یہ حروفِ مفردات بنیاد ہیں۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ یادکروائیں سطر کے آخر سے دائیں اور اوپر سے نیچے اور نیچے سے اوپر کی طرف پڑھوائیں۔ اگر اس تختی میں کمی رہی تو یاد رکھیے اس کا اثر بہت آگے تک جائے گا اور کمزور بنیاد پر اچھی عمارت ممکن نہیں۔
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. Qaida Grid (Boxes with colored letters and English names)
-st.markdown('<div class="qaida-grid-table">', unsafe_allow_html=True)
-for item in takhti_1_letters:
-    st.markdown(f'''
-        <div class="qaida-grid-cell">
-            <div class="qaida-arabic-letter" style="color: {item['color']};">{item['ar']}</div>
-            <div class="qaida-eng-label">{item['name']}</div>
-        </div>
-    ''', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+# 4. PROPER GRID COLUMNS (Using Streamlit Native Columns for 5 items per row)
+cols_per_row = 5
+for i in range(0, len(takhti_1_letters), cols_per_row):
+    cols = st.columns(cols_per_row)
+    for j in range(cols_per_row):
+        if i + j < len(takhti_1_letters):
+            item = takhti_1_letters[i + j]
+            with cols[j]:
+                # Custom styled card for each letter
+                st.markdown(f"""
+                    <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
+                        <div style="font-size: 13px; color: #555; font-weight: bold; margin-top: 4px;">{item['name']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True) # End of container
 
 st.divider()
 
-# --- AUDIO PRACTICE & TESTING MODULE ---
-st.markdown(f"### 🎙️ {student_name} ke liye Tilaawat aur Mashq (Practice & Test)")
-audio_val = st.audio_input("Microphone par click kar ke parh kar sunayein:")
+# --- PRACTICE & TEST MODULE ---
+st.markdown(f"### 🎙️ {student_name} کے لیے مشق اور ریکارڈنگ")
+audio_val = st.audio_input("مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:")
 
 if audio_val is not None:
     st.audio(audio_val)
-    with st.spinner("🤖 AI ustad aapki aawaz aur talaffuz check kar raha hai..."):
+    with st.spinner("🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے..."):
         time.sleep(2)
         
     st.markdown("""
         <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
-            <b>🌟 Mashallah bohat zabardast talaffuz hai!</b><br>
-            • Aap ne huroof-e-mufradat bilkul theek ada kiye hain.<br>
-            • <b>Score:</b> ⭐⭐⭐⭐⭐ (5/5)
+            <b>🌟 ماشاءاللہ بہت زبردست تلفظ ہے!</b><br>
+            • حروفِ مفردات کی ادائیگی بالکل درست رہی۔<br>
+            • <b>اسکور:</b> ⭐⭐⭐⭐⭐ (5/5)
         </div>
     """, unsafe_allow_html=True)
     st.balloons()
