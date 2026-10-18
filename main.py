@@ -8,13 +8,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR PROPER GRID COLUMNS & BOOK PAGE ---
+# --- CUSTOM CSS FOR RTL (RIGHT-TO-LEFT) QAIDA PAGE ---
 st.markdown("""
     <style>
     .main {
         background-color: #f4f6f0;
     }
-    /* Outer Book Page Container */
+    /* Outer Book Page Container with RTL direction */
     .qaida-book-container {
         border: 6px double #1b5e20;
         background-color: #ffffff;
@@ -23,6 +23,7 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         max-width: 1000px;
         margin: 0 auto;
+        direction: rtl;
     }
     /* Top Header Banner */
     .qaida-header-banner {
@@ -56,7 +57,6 @@ st.markdown("""
         font-size: 15px;
         color: #333;
         margin-bottom: 25px;
-        direction: rtl;
         text-align: right;
     }
     .hidayat-title {
@@ -69,13 +69,13 @@ st.markdown("""
 
 # --- SIDEBAR SETTINGS ---
 st.sidebar.header("⚙️ Settings / ترتیبات")
-student_name = st.sidebar.text_input("Student Name / طالب علم کا نام:", "Muaz Aziz")
+student_name = st.sidebar.text_input("Student Name / طالب علم کا نام:", "مُعاذ عزیز")
 selected_takhti = st.sidebar.selectbox(
     "Select Takhti / تختی منتخب کریں:",
     ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
 )
 
-# --- QAIDA DATA ---
+# --- QAIDA DATA (Right to Left Order) ---
 takhti_1_letters = [
     {"ar": "ا", "name": "Alif", "color": "#e53935"},
     {"ar": "ب", "name": "Ba", "color": "#000000"},
@@ -115,15 +115,16 @@ st.markdown('''
     </div>
 ''', unsafe_allow_html=True)
 
-# 4. PROPER GRID COLUMNS (Using Streamlit Native Columns for 5 items per row)
+# 4. RTL GRID COLUMNS (Reversing column loop so it starts from Right side)
 cols_per_row = 5
 for i in range(0, len(takhti_1_letters), cols_per_row):
     cols = st.columns(cols_per_row)
-    for j in range(cols_per_row):
-        if i + j < len(takhti_1_letters):
-            item = takhti_1_letters[i + j]
+    # Reversing columns order for RTL layout (Right to Left filling)
+    for j in range(cols_per_row - 1, -1, -1):
+        idx = i + (cols_per_row - 1 - j)
+        if idx < len(takhti_1_letters):
+            item = takhti_1_letters[idx]
             with cols[j]:
-                # Custom styled card for each letter
                 st.markdown(f"""
                     <div style="background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; text-align: center; padding: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                         <div style="font-size: 38px; font-family: 'Amiri', serif; font-weight: bold; color: {item['color']};">{item['ar']}</div>
