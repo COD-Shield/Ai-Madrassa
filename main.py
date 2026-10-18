@@ -3,65 +3,67 @@ import time
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="AI مکتب و مدرسہ - Digital Madrassa & LMS",
+    page_title="AI مکتب و مدرسہ - Digital LMS",
     page_icon="📖",
     layout="wide"
 )
 
-# --- GLOBAL TRANSLATIONS DICTIONARY ---
+# --- GLOBAL TRANSLATIONS & CONFIG ---
 TRANSLATIONS = {
     "اردو (Urdu)": {
-        "app_title": "📖 AI مکتب و مدرسہ (Digital Noorani Qaida & LMS)",
+        "app_name": "📖 AI مکتب و مدرسہ",
+        "tagline": "ڈیجیٹل نورانی قاعدہ اور AI تلفظ کوچنگ پلیٹ فارم",
+        "sidebar_title": "🧭 مینیو (Navigation)",
+        "menu_home": "🏠 مین ڈیش بورڈ (Dashboard)",
+        "menu_qaida": "📖 نورانی قاعدہ (Qaida Module)",
+        "menu_admin": "🛠️ ایڈمن پینل (Admin Center)",
+        "settings_header": "⚙️ سسٹم سیٹنگز",
+        "lang_label": "زبان (Language):",
+        "student_label": "طالب علم:",
         "hero_title": "خوش آمدید، معاذ عزیز! 🌟",
-        "hero_subtitle": "بچوں کے لیے جدید ترین ڈیجیٹل قاعدہ، انٹرایکティブ گرڈز، اور AI تلفظ کوچنگ سسٹم۔",
-        "sidebar_header": "⚙️ گلوبل ترتیبات (Global Settings)",
-        "lang_label": "زبان منتخب کریں (Language):",
-        "student_label": "طالب علم کا نام:",
-        "nav_home": "🏠 مین ڈیش بورڈ (Home)",
-        "nav_qaida": "📖 نورانی قاعدہ کورس (Qaida)",
-        "nav_admin": "🛠️ ایڈمن پینل (Admin Panel)",
-        "quick_stats": "📊 فوری کارکردگی اور اعداد و شمار",
-        "stat_students": "رجسٹرڈ طلباء",
-        "stat_lessons": "مکمل اسباق",
-        "stat_accuracy": "اوسط تلفظ درستگی",
-        "card_qaida_title": "📚 تختی نمبر 1: حروفِ مفردات",
-        "card_qaida_desc": "روایتی رنگین خانے، دائیں سے بائیں (RTL) ترتیب، اور آڈیو ریکارڈنگ کے ساتھ۔",
-        "start_btn": "سبق شروع کریں 🚀",
+        "hero_desc": "یہ پلیٹ فارم بچوں کے لیے نورانی قاعدے کی درست تختیوں، رنگین خانوں اور لائیو اے آئی آڈیو کوچنگ کے ساتھ ڈیزائن کیا گیا ہے۔",
+        "stat_active": "ایکٹو اسٹوڈنٹس",
+        "stat_Takhti": "کل اسباق",
+        "stat_acc": "درستگی کا تناسب",
+        "card_title": "تختی نمبر 1: حروفِ مفردات",
+        "card_desc": "روایتی قاعدے کی طرح دائیں سے بائیں (RTL) ترتیب اور خوبصورت خانوں کے ساتھ۔",
+        "btn_start": "سبق شروع کریں 🚀",
         "takhti_title": "تختی نمبر 1 ـــ حروفِ مفردات",
         "bismillah": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
         "hidayat_title": "ہدایات:",
         "hidayat_text": "یہ حروفِ مفردات بنیاد ہیں۔ ان میں بچے کے تلفظ درست کروائیں اور حروف کے نقطے بھی یاد کروائیں۔ یادکروائیں سطر کے آخر سے دائیں اور اوپر سے نیچے اور نیچے سے اوپر کی طرف پڑھوائیں۔",
-        "select_takhti_label": "تختی منتخب کریں:",
-        "mic_text": "مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:",
-        "ai_check": "🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے...",
-        "success_msg": "🌟 ماشاءاللہ بہت زبردست تلفظ ہے! حروفِ مفردات کی ادائیگی بالکل درست رہی۔ اسکور: ⭐⭐⭐⭐⭐ (5/5)",
+        "select_takhti": "تختی منتخب کریں:",
+        "mic_prompt": "مائیکروفون پر کلک کر کے تلاوت ریکارڈ کریں:",
+        "ai_processing": "🤖 AI استاد آپ کے تلفظ کا جائزہ لے رہا ہے...",
+        "success_review": "🌟 ماشاءاللہ بہت زبردست تلفظ ہے! حروفِ مفردات کی ادائیگی بالکل درست رہی۔ اسکور: ⭐⭐⭐⭐⭐ (5/5)",
         "dir": "rtl"
     },
     "English": {
-        "app_title": "📖 AI Maktab o Madrassa (Digital Noorani Qaida & LMS)",
+        "app_name": "📖 AI Maktab o Madrassa",
+        "tagline": "Digital Noorani Qaida & AI Pronunciation Coaching Platform",
+        "sidebar_title": "🧭 Navigation Menu",
+        "menu_home": "🏠 Main Dashboard",
+        "menu_qaida": "📖 Noorani Qaida Module",
+        "menu_admin": "🛠️ Admin Center",
+        "settings_header": "⚙️ System Settings",
+        "lang_label": "Language:",
+        "student_label": "Student:",
         "hero_title": "Welcome, Muaz Aziz! 🌟",
-        "hero_subtitle": "Advanced Digital Qaida, interactive grids, and AI pronunciation coaching system for kids.",
-        "sidebar_header": "⚙️ Global Settings",
-        "lang_label": "Select Language:",
-        "student_label": "Student Name:",
-        "nav_home": "🏠 Main Dashboard (Home)",
-        "nav_qaida": "📖 Noorani Qaida Course",
-        "nav_admin": "🛠️ Admin Panel",
-        "quick_stats": "📊 Quick Performance & Statistics",
-        "stat_students": "Registered Students",
-        "stat_lessons": "Completed Lessons",
-        "stat_accuracy": "Avg Pronunciation Score",
-        "card_qaida_title": "📚 Takhti No. 1: Basic Alphabets",
-        "card_qaida_desc": "Traditional colored grid layout, right-to-left (RTL) flow, with live audio recording.",
-        "start_btn": "Start Lesson 🚀",
+        "hero_desc": "Designed for kids to learn Noorani Qaida using traditional grid layouts, interactive audio, and live AI coaching.",
+        "stat_active": "Active Students",
+        "stat_Takhti": "Total Lessons",
+        "stat_acc": "Accuracy Rate",
+        "card_title": "Takhti No. 1: Basic Alphabets",
+        "card_desc": "Traditional grid layout with right-to-left (RTL) Arabic typography and live voice recording.",
+        "btn_start": "Start Lesson 🚀",
         "takhti_title": "Lesson No. 1 - Basic Alphabets",
         "bismillah": "Bismillah-ir-Rahman-ir-Rahim",
         "hidayat_title": "Instruction:",
         "hidayat_text": "These are basic alphabets. Practice correct pronunciation and letter points from right to left, top to bottom. A strong foundation is essential.",
-        "select_takhti_label": "Select Takhti:",
-        "mic_text": "Click on the microphone to record recitation:",
-        "ai_check": "🤖 AI Teacher is reviewing your pronunciation...",
-        "success_msg": "🌟 Mashallah wonderful pronunciation! Basic alphabets recited accurately. Score: ⭐⭐⭐⭐⭐ (5/5)",
+        "select_takhti": "Select Takhti:",
+        "mic_prompt": "Click on the microphone to record recitation:",
+        "ai_processing": "🤖 AI Teacher is reviewing your pronunciation...",
+        "success_review": "🌟 Mashallah wonderful pronunciation! Basic alphabets recited accurately. Score: ⭐⭐⭐⭐⭐ (5/5)",
         "dir": "ltr"
     }
 }
@@ -71,48 +73,48 @@ if "language" not in st.session_state:
     st.session_state.language = "اردو (Urdu)"
 if "student_name" not in st.session_state:
     st.session_state.student_name = "مُعاذ عزیز"
-if "active_page" not in st.session_state:
-    st.session_state.active_page = "Home"
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "Dashboard"
 
 lang = st.session_state.language
 t = TRANSLATIONS[lang]
 
-# --- PRO PROFESSIONAL STYLES (COD Shield Banner & Card Style) ---
+# --- PROFESSIONAL UI STYLING (COD Shield Standard) ---
 st.markdown(f"""
     <style>
     .main {{
-        background-color: #f4f6f0;
+        background-color: #f8faf5;
     }}
-    /* COD Shield Style Hero Banner */
-    .hero-banner {{
+    /* Top Hero Header */
+    .cod-hero-card {{
         background: linear-gradient(135deg, #1b5e20, #2e7d32);
         color: white;
-        padding: 35px 30px;
-        border-radius: 16px;
-        text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        padding: 32px 28px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         direction: {t['dir']};
     }}
-    .hero-banner h1 {{
-        margin-bottom: 10px;
-        font-size: 36px;
+    .cod-hero-card h1 {{
+        margin-bottom: 8px;
+        font-size: 32px;
     }}
-    .hero-banner p {{
-        font-size: 18px;
+    .cod-hero-card p {{
+        font-size: 16px;
         opacity: 0.9;
+        margin: 0;
     }}
-    /* Dashboard Cards Style */
-    .dashboard-card {{
+    /* Content Boxes */
+    .cod-content-card {{
         background-color: #ffffff;
-        border: 1px solid #c8e6c9;
-        border-radius: 14px;
-        padding: 24px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border: 1px solid #d4edda;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         margin-bottom: 20px;
         direction: {t['dir']};
     }}
-    /* Book Page Container */
+    /* Qaida Book Page View */
     .qaida-book-container {{
         border: 6px double #1b5e20;
         background-color: #ffffff;
@@ -198,87 +200,88 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# --- SIDEBAR GLOBAL NAVIGATION & SETTINGS ---
-st.sidebar.header(t["sidebar_header"])
+# --- SIDEBAR NAVIGATION (COD Shield Layout Pattern) ---
+st.sidebar.title(t["app_name"])
+st.sidebar.markdown(t["tagline"])
+st.sidebar.markdown("---")
 
-new_lang = st.sidebar.selectbox(t["lang_label"], list(TRANSLATIONS.keys()), index=list(TRANSLATIONS.keys()).index(lang))
-if new_lang != lang:
-    st.session_state.language = new_lang
+st.sidebar.subheader(t["settings_header"])
+selected_lang = st.sidebar.selectbox(t["lang_label"], list(TRANSLATIONS.keys()), index=list(TRANSLATIONS.keys()).index(lang))
+if selected_lang != lang:
+    st.session_state.language = selected_lang
     st.rerun()
 
-st.sidebar.markdown("---")
-st.sidebar.markdown(f"**👤 {t['student_label']}**")
-entered_name = st.sidebar.text_input("Name", st.session_state.student_name, label_visibility="collapsed")
+entered_name = st.sidebar.text_input(t["student_label"], st.session_state.student_name)
 if entered_name != st.session_state.student_name:
     st.session_state.student_name = entered_name
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 🧭 Navigation Hub")
-if st.sidebar.button(t["nav_home"], use_container_width=True):
-    st.session_state.active_page = "Home"
+st.sidebar.subheader(t["sidebar_title"])
+
+if st.sidebar.button(t["menu_home"], use_container_width=True):
+    st.session_state.current_page = "Dashboard"
     st.rerun()
-if st.sidebar.button(t["nav_qaida"], use_container_width=True):
-    st.session_state.active_page = "Qaida"
+if st.sidebar.button(t["menu_qaida"], use_container_width=True):
+    st.session_state.current_page = "Qaida"
     st.rerun()
-if st.sidebar.button(t["nav_admin"], use_container_width=True):
-    st.session_state.active_page = "Admin"
+if st.sidebar.button(t["menu_admin"], use_container_width=True):
+    st.session_state.current_page = "Admin"
     st.rerun()
 
 
 # ==========================================
-# 1. MAIN LANDING / DASHBOARD HUB (HOME)
+# PAGE 1: MAIN DASHBOARD (COD Shield Style)
 # ==========================================
-if st.session_state.active_page == "Home":
-    # COD Shield Style Professional Banner
+if st.session_state.current_page == "Dashboard":
     st.markdown(f"""
-        <div class="hero-banner">
+        <div class="cod-hero-card">
             <h1>{t['hero_title']}</h1>
-            <p>{t['hero_subtitle']}</p>
+            <p>{t['hero_desc']}</p>
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown(f"### {t['quick_stats']}")
-    col_s1, col_s2, col_s3 = st.columns(3)
-    with col_s1:
-        st.metric(label=t["stat_students"], value="1")
-    with col_s2:
-        st.metric(label=t["stat_lessons"], value="Takhti 1")
-    with col_s3:
-        st.metric(label=t["stat_accuracy"], value="98%")
+    # Metrics Row
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric(label=t["stat_active"], value="1")
+    with col2:
+        st.metric(label=t["stat_Takhti"], value="Takhti 1")
+    with col3:
+        st.metric(label=t["stat_acc"], value="99%")
         
     st.divider()
     
-    # Dashboard Course Cards
-    col_c1, col_c2 = st.columns(2)
-    with col_c1:
+    # Feature Cards
+    col_a, col_b = st.columns(2)
+    with col_a:
         st.markdown(f"""
-            <div class="dashboard-card">
-                <h3>{t['card_qaida_title']}</h3>
-                <p>{t['card_qaida_desc']}</p>
+            <div class="cod-content-card">
+                <h3>{t['card_title']}</h3>
+                <p>{t['card_desc']}</p>
             </div>
         """, unsafe_allow_html=True)
-        if st.button(t["start_btn"], type="primary", use_container_width=True):
-            st.session_state.active_page = "Qaida"
+        if st.button(t["btn_start"], type="primary", use_container_width=True):
+            st.session_state.current_page = "Qaida"
             st.rerun()
             
-    with col_c2:
+    with col_b:
         st.markdown("""
-            <div class="dashboard-card">
-                <h3>🛠️ AI Speech Tutor (v2.1)</h3>
-                <p>Real-time audio analysis and interactive feedback powered by artificial intelligence.</p>
+            <div class="cod-content-card">
+                <h3>🛠️ AI Speech Verification Engine</h3>
+                <p>Real-time speech analysis node to evaluate articulation accuracy and give instant star ratings.</p>
             </div>
         """, unsafe_allow_html=True)
-        if st.button("Open Admin Hub", use_container_width=True):
-            st.session_state.active_page = "Admin"
+        if st.button("Open Admin Panel", use_container_width=True):
+            st.session_state.current_page = "Admin"
             st.rerun()
 
 
 # ==========================================
-# 2. NOORANI QAIDA BOOK PAGE (QAIDA MODULE)
+# PAGE 2: NOORANI QAIDA BOOK MODULE
 # ==========================================
-elif st.session_state.active_page == "Qaida":
+elif st.session_state.current_page == "Qaida":
     selected_takhti = st.selectbox(
-        t["select_takhti_label"],
+        t["select_takhti"],
         ["تختی نمبر 1: حروفِ مفردات", "تختی نمبر 2: حروفِ مرکبات", "تختی نمبر 3: حرکات"]
     )
     
@@ -363,33 +366,33 @@ elif st.session_state.active_page == "Qaida":
     
     st.divider()
 
-    st.markdown(f"### 🎙️ {st.session_state.student_name} - {t['mic_text']}")
-    audio_val = st.audio_input(t["mic_text"])
+    st.markdown(f"### 🎙️ {st.session_state.student_name} - {t['mic_prompt']}")
+    audio_val = st.audio_input(t["mic_prompt"])
 
     if audio_val is not None:
         st.audio(audio_val)
-        with st.spinner(t["ai_check"]):
+        with st.spinner(t["ai_processing"]):
             time.sleep(2)
             
         st.markdown(f"""
             <div style="padding: 15px; border-radius: 10px; background-color: #e8f5e9; border-left: 5px solid #2e7d32; font-size: 16px; color: #2e7d32; margin-top: 20px;">
-                {t['success_msg']}
+                {t['success_review']}
             </div>
         """, unsafe_allow_html=True)
         st.balloons()
 
 
 # ==========================================
-# 3. ADMIN PANEL
+# PAGE 3: ADMIN CENTER
 # ==========================================
-elif st.session_state.active_page == "Admin":
-    st.markdown("### 🛠️ Admin & Teacher Control Panel")
-    st.info("Manage student records, review AI pronunciation logs, and configure curriculum settings.")
+elif st.session_state.current_page == "Admin":
+    st.markdown("### 🛠️ Admin & Teacher Control Center")
+    st.info("Manage curriculum logs, review student voice records, and oversee multi-tenant settings.")
     
     col_a, col_b = st.columns(2)
     with col_a:
-        st.metric(label="Registered Students", value="1")
-        st.metric(label="Active Sessions", value="1")
+        st.metric(label="Total Enrolled Students", value="1")
+        st.metric(label="System Status", value="Operational 🟢")
     with col_b:
-        st.success(f"Current Student Profile: **{st.session_state.student_name}**")
-        st.warning("AI Speech Model: Active (v2.1)")
+        st.success(f"Active Student Profile: **{st.session_state.student_name}**")
+        st.warning("AI Pronunciation Model: Active (v2.1)")
